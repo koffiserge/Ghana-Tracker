@@ -3,183 +3,210 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Ghana Ride-Hailing & Fuel Tracker</title>
-
+<title>Uber Ghana Ops Tracker</title>
 <style>
-:root{--bg:#0e0e0e;--bg2:#161616;--bg3:#1f1f1f;--bg4:#252525;--border:rgba(255,255,255,0.08);--border2:rgba(255,255,255,0.14);--text:#e8e8e8;--text2:#999;--text3:#555;--accent:#f0c040;--red:#e05a5a;--green:#4caf72;--blue:#5b9bd5;--orange:#e8a020;--mono:'IBM Plex Mono',monospace;--sans:'IBM Plex Sans',sans-serif;}
 *{box-sizing:border-box;margin:0;padding:0;}
-body{background:var(--bg);color:var(--text);font-family:var(--sans);font-size:14px;line-height:1.6;}
-a{color:var(--accent);text-decoration:none;}
-.topbar{border-bottom:1px solid var(--border);padding:10px 24px;display:flex;align-items:center;justify-content:space-between;font-family:var(--mono);font-size:11px;color:var(--text3);position:sticky;top:0;z-index:100;background:var(--bg);}
-.dot{width:7px;height:7px;border-radius:50%;background:var(--green);display:inline-block;animation:pulse 2s infinite;}
-@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
-.hero{padding:48px 24px 32px;border-bottom:1px solid var(--border);max-width:1100px;margin:0 auto;}
-.hero-label{font-family:var(--mono);font-size:10px;color:var(--accent);text-transform:uppercase;letter-spacing:.12em;margin-bottom:10px;}
-.hero-title{font-size:28px;font-weight:500;color:#fff;line-height:1.2;margin-bottom:6px;}
-.hero-sub{font-size:13px;color:var(--text2);max-width:640px;}
-.sitrep{background:var(--bg2);border:1px solid var(--border2);border-left:3px solid var(--accent);border-radius:6px;padding:16px 20px;margin:24px auto;max-width:1052px;}
-.sitrep-hdr{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10px;}
-.sitrep-ttl{font-family:var(--mono);font-size:11px;color:var(--accent);text-transform:uppercase;letter-spacing:.1em;}
-.sitrep-meta{font-family:var(--mono);font-size:10px;color:var(--text3);}
-#sitrep-content{width:100%;background:transparent;border:none;color:var(--text2);font-size:13px;line-height:1.7;font-family:var(--sans);resize:none;outline:none;min-height:60px;}
-#sitrep-content:focus{color:var(--text);}
-.sr-hint{font-size:10px;color:var(--text3);margin-top:6px;font-family:var(--mono);}
-.tiles-wrap{max-width:1100px;margin:0 auto 0;padding:0 24px;}
-.tiles-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(195px,1fr));gap:1px;background:var(--border);border:1px solid var(--border);border-radius:8px;overflow:hidden;}
-.tile{background:var(--bg2);padding:16px 18px;transition:background .15s;}
-.tile:hover{background:var(--bg3);}
-.tile-label{font-family:var(--mono);font-size:10px;color:var(--text3);text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px;}
-.tile-value{font-size:21px;font-weight:500;color:#fff;font-family:var(--mono);line-height:1.1;margin-bottom:4px;}
-.tile-unit{font-size:11px;font-weight:400;color:var(--text2);}
-.tile-ctx{font-size:11px;color:var(--text3);line-height:1.4;}
-.t-red{border-top:2px solid var(--red);}
-.t-amber{border-top:2px solid var(--accent);}
-.t-green{border-top:2px solid var(--green);}
-.up{color:var(--red);font-weight:500;}
-.dn{color:var(--green);font-weight:500;}
-.tabs-outer{max-width:1100px;margin:28px auto 0;padding:0 24px;}
-.tabs{display:flex;gap:0;border-bottom:1px solid var(--border);overflow-x:auto;}
-.tab-btn{font-family:var(--mono);font-size:11px;padding:12px 18px;border:none;background:transparent;color:var(--text3);cursor:pointer;border-bottom:2px solid transparent;transition:all .15s;white-space:nowrap;text-transform:uppercase;letter-spacing:.06em;}
-.tab-btn:hover{color:var(--text);}
-.tab-btn.active{color:var(--accent);border-bottom-color:var(--accent);}
-.tab-panel{display:none;padding:28px 24px;max-width:1100px;margin:0 auto;}
-.tab-panel.active{display:block;}
-.sec{font-family:var(--mono);font-size:10px;color:var(--text3);text-transform:uppercase;letter-spacing:.1em;margin:0 0 14px;padding-bottom:8px;border-bottom:1px solid var(--border);}
-.chart-card{background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:20px;margin-bottom:20px;}
-.chart-legend{display:flex;gap:16px;margin-bottom:12px;flex-wrap:wrap;}
-.chart-legend span{display:flex;align-items:center;gap:6px;font-size:11px;color:var(--text2);font-family:var(--mono);}
-.leg-sq{width:10px;height:10px;border-radius:2px;display:inline-block;}
-/* platform cards */
-.platform-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin-bottom:20px;}
-.p-card{background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:16px;}
-.p-card-u{border-top:2px solid var(--blue);}.p-card-b{border-top:2px solid var(--orange);}.p-card-y{border-top:2px solid var(--green);}
-.p-name{font-size:14px;font-weight:500;margin-bottom:12px;font-family:var(--mono);}
-.p-sec{font-family:var(--mono);font-size:9px;color:var(--text3);text-transform:uppercase;letter-spacing:.1em;padding:6px 0 3px;border-top:1px solid var(--border);margin-top:6px;}
-.p-row{display:flex;justify-content:space-between;align-items:center;font-size:12px;padding:5px 0;border-bottom:1px solid var(--border);}
-.p-row:last-child{border-bottom:none;}
-.p-row span:first-child{color:var(--text2);}
-.editable{background:transparent;border:none;color:var(--text);font-size:12px;font-weight:500;text-align:right;width:72px;font-family:var(--mono);padding:0;outline:none;}
-.editable:focus{border-bottom:1px solid var(--accent);color:var(--accent);}
-.editable::placeholder{color:var(--text3);}
-.fee-row{display:flex;justify-content:space-between;align-items:center;font-size:12px;padding:5px 8px;background:var(--bg3);border-radius:4px;margin:3px 0;}
-.fee-row span:first-child{color:var(--text2);}
-.bd-wrap{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin-top:14px;}
-.bd{font-size:11px;color:var(--text2);padding-top:10px;border-top:1px solid var(--border);font-family:var(--mono);}
-.bd-row{display:flex;justify-content:space-between;padding:2px 0;}
-.bd-total{font-weight:500;color:var(--text);border-top:1px solid var(--border2);margin-top:5px;padding-top:5px;}
-/* station table */
-.station-table{width:100%;border-collapse:collapse;font-size:12px;}
-.station-table th{font-family:var(--mono);font-size:10px;text-transform:uppercase;letter-spacing:.07em;color:var(--text3);text-align:left;padding:8px 10px;border-bottom:1px solid var(--border2);}
-.station-table td{padding:10px 10px;border-bottom:1px solid var(--border);color:var(--text2);}
-.station-table tr:last-child td{border-bottom:none;}
-.station-table tr:hover td{background:var(--bg3);}
-.station-name{font-weight:500;color:var(--text);}
-.bar-wrap{display:flex;align-items:center;gap:8px;}
-.bar-bg{flex:1;height:6px;background:var(--bg3);border-radius:3px;overflow:hidden;}
-.bar-fill{height:6px;border-radius:3px;}
-.price-val{font-family:var(--mono);font-size:12px;font-weight:500;min-width:52px;text-align:right;}
-.badge-cheap{background:rgba(76,175,114,.15);color:var(--green);border:1px solid rgba(76,175,114,.3);font-size:9px;padding:2px 7px;border-radius:3px;font-family:var(--mono);}
-.badge-mid{background:rgba(240,192,64,.1);color:var(--accent);border:1px solid rgba(240,192,64,.2);font-size:9px;padding:2px 7px;border-radius:3px;font-family:var(--mono);}
-.badge-high{background:rgba(224,90,90,.1);color:var(--red);border:1px solid rgba(224,90,90,.2);font-size:9px;padding:2px 7px;border-radius:3px;font-family:var(--mono);}
-/* west africa table */
-.wa-table{width:100%;border-collapse:collapse;font-size:12px;}
-.wa-table th{font-family:var(--mono);font-size:10px;text-transform:uppercase;letter-spacing:.07em;color:var(--text3);text-align:left;padding:8px 10px;border-bottom:1px solid var(--border2);}
-.wa-table td{padding:10px 10px;border-bottom:1px solid var(--border);color:var(--text2);}
-.wa-table tr:last-child td{border-bottom:none;}
-.wa-table tr:hover td{background:var(--bg3);}
-.wa-table tr.highlight-row td{background:rgba(240,192,64,.05);}
-.wa-table tr.highlight-row td:first-child{border-left:2px solid var(--accent);}
-/* timeline */
-.fuel-timeline{position:relative;padding-left:28px;}
-.fuel-timeline:before{content:'';position:absolute;left:6px;top:0;bottom:0;width:1px;background:var(--border2);}
-.ftl-item{position:relative;margin-bottom:24px;}
-.ftl-item:last-child{margin-bottom:0;}
-.ftl-dot{position:absolute;left:-25px;top:4px;width:11px;height:11px;border-radius:50%;border:2px solid var(--bg);z-index:1;}
-.ftl-date{font-family:var(--mono);font-size:10px;color:var(--text3);margin-bottom:4px;text-transform:uppercase;letter-spacing:.06em;}
-.ftl-title{font-size:13px;font-weight:500;color:var(--text);margin-bottom:4px;}
-.ftl-body{font-size:12px;color:var(--text2);line-height:1.55;}
-.ftl-prices{display:flex;gap:12px;margin-top:6px;flex-wrap:wrap;}
-.ftl-price{font-family:var(--mono);font-size:11px;padding:3px 10px;border-radius:3px;background:var(--bg3);border:1px solid var(--border);}
-/* key events timeline */
-.tl-item{display:flex;gap:14px;padding:10px 0;border-bottom:1px solid var(--border);}
-.tl-item:last-child{border-bottom:none;}
-.tl-date{font-family:var(--mono);font-size:10px;color:var(--text3);min-width:72px;padding-top:2px;}
-.tl-body{font-size:12px;color:var(--text2);flex:1;line-height:1.5;}
-.tl-tag{display:inline-block;font-size:9px;padding:2px 6px;border-radius:3px;margin-right:6px;font-family:var(--mono);text-transform:uppercase;letter-spacing:.05em;font-weight:500;}
-.tag-fuel{background:rgba(240,192,64,.15);color:var(--accent);border:1px solid rgba(240,192,64,.25);}
-.tag-fare{background:rgba(91,155,213,.15);color:var(--blue);border:1px solid rgba(91,155,213,.25);}
-.tag-policy{background:rgba(76,175,114,.15);color:var(--green);border:1px solid rgba(76,175,114,.25);}
-.tag-alert{background:rgba(224,90,90,.15);color:var(--red);border:1px solid rgba(224,90,90,.25);}
-/* initiatives */
-.init-filters{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:16px;}
-.f-btn{font-family:var(--mono);font-size:10px;padding:4px 12px;border-radius:3px;border:1px solid var(--border2);cursor:pointer;background:transparent;color:var(--text3);text-transform:uppercase;letter-spacing:.05em;transition:all .15s;}
-.f-btn:hover{color:var(--text);}
-.f-btn.active{background:var(--accent);color:#000;border-color:var(--accent);}
-.init-item{background:var(--bg2);border:1px solid var(--border);border-radius:6px;padding:14px;margin-bottom:8px;}
-.init-head{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:7px;}
-.init-title-text{font-size:13px;font-weight:500;color:var(--text);flex:1;margin-right:10px;}
-.i-status{font-family:var(--mono);font-size:9px;padding:2px 8px;border-radius:3px;font-weight:500;text-transform:uppercase;letter-spacing:.05em;}
-.s-live{background:rgba(76,175,114,.15);color:var(--green);border:1px solid rgba(76,175,114,.3);}
-.s-planned{background:rgba(91,155,213,.15);color:var(--blue);border:1px solid rgba(91,155,213,.3);}
-.s-ended{background:rgba(255,255,255,.06);color:var(--text3);border:1px solid var(--border);}
-.init-meta{margin-bottom:5px;display:flex;align-items:center;gap:6px;flex-wrap:wrap;}
-.init-desc{font-size:12px;color:var(--text2);line-height:1.5;}
-.ptag{font-family:var(--mono);font-size:9px;padding:2px 7px;border-radius:3px;font-weight:500;text-transform:uppercase;letter-spacing:.04em;}
-.pt-uber{background:rgba(91,155,213,.15);color:var(--blue);border:1px solid rgba(91,155,213,.25);}
-.pt-bolt{background:rgba(232,160,32,.15);color:var(--orange);border:1px solid rgba(232,160,32,.25);}
-.pt-yango{background:rgba(76,175,114,.15);color:var(--green);border:1px solid rgba(76,175,114,.25);}
-.pt-all{background:rgba(255,255,255,.06);color:var(--text2);border:1px solid var(--border);}
-.ctag{font-family:var(--mono);font-size:9px;padding:2px 7px;border-radius:3px;text-transform:uppercase;letter-spacing:.04em;color:var(--text3);border:1px solid var(--border);}
-.btn-del{background:transparent;border:none;color:var(--text3);cursor:pointer;font-size:12px;padding:0 0 0 8px;}
-.btn-del:hover{color:var(--red);}
-.add-form{background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:18px;margin-bottom:20px;}
-.add-form-title{font-family:var(--mono);font-size:10px;color:var(--text3);text-transform:uppercase;letter-spacing:.1em;margin-bottom:14px;}
-.fg3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:10px;}
-.fg2{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px;}
-.fl{font-family:var(--mono);font-size:10px;color:var(--text3);display:block;margin-bottom:4px;text-transform:uppercase;letter-spacing:.06em;}
-.fi{font-size:12px;padding:7px 10px;border:1px solid var(--border2);border-radius:4px;background:var(--bg3);color:var(--text);width:100%;font-family:var(--sans);outline:none;transition:border .15s;}
-.fi:focus{border-color:var(--accent);}
-textarea.fi{resize:vertical;min-height:52px;}
-.btn-add{font-family:var(--mono);font-size:11px;padding:7px 18px;border-radius:4px;border:1px solid var(--accent);cursor:pointer;background:transparent;color:var(--accent);text-transform:uppercase;letter-spacing:.06em;transition:all .15s;}
-.btn-add:hover{background:var(--accent);color:#000;}
-/* impact */
-.impact-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
-.ic{background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:16px;}
-.ic-title{font-family:var(--mono);font-size:11px;color:var(--accent);text-transform:uppercase;letter-spacing:.08em;margin-bottom:10px;}
-.ic-row{font-size:12px;color:var(--text2);padding:3px 0;display:flex;gap:8px;}
-.ic-row:before{content:"›";color:var(--text3);}
-/* sources */
-.src-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px;}
-.src-card{background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:16px;}
-.src-title{font-family:var(--mono);font-size:10px;color:var(--accent);text-transform:uppercase;letter-spacing:.08em;margin-bottom:10px;}
-.src-row{display:flex;gap:10px;padding:5px 0;border-bottom:1px solid var(--border);font-size:12px;}
-.src-row:last-child{border-bottom:none;}
-.src-tag{font-family:var(--mono);font-size:9px;padding:2px 6px;border-radius:3px;background:var(--bg3);color:var(--text3);border:1px solid var(--border);white-space:nowrap;align-self:flex-start;margin-top:2px;}
-.src-info{color:var(--text2);line-height:1.5;}
-.src-info a{color:var(--blue);}
-.method-box{background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:16px;}
-.method-title{font-family:var(--mono);font-size:10px;color:var(--text3);text-transform:uppercase;letter-spacing:.08em;margin-bottom:10px;}
-.method-row{font-size:12px;color:var(--text2);padding:5px 0;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;gap:16px;}
-.method-row:last-child{border-bottom:none;}
-.method-row span:first-child{color:var(--text3);font-family:var(--mono);font-size:11px;white-space:nowrap;}
-/* footer */
-.footer{border-top:1px solid var(--border);padding:16px 24px;display:flex;justify-content:space-between;align-items:center;max-width:1100px;margin:0 auto;}
-.footer span{font-family:var(--mono);font-size:10px;color:var(--text3);}
-.save-btn{font-family:var(--mono);font-size:10px;padding:5px 14px;border:1px solid var(--border2);border-radius:3px;background:transparent;color:var(--text2);cursor:pointer;text-transform:uppercase;letter-spacing:.06em;transition:all .15s;}
-.save-btn:hover{border-color:var(--accent);color:var(--accent);}
-.note{font-size:11px;color:var(--text3);font-family:var(--mono);margin-top:8px;}
-@media(max-width:720px){.platform-grid,.fg3,.src-grid,.impact-grid{grid-template-columns:1fr;}.tiles-grid{grid-template-columns:1fr 1fr;}.bd-wrap{grid-template-columns:1fr;}.hero-title{font-size:22px;}}
+body{background:#0e0e0e;color:#e8e8e8;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:14px;}
+a{color:#f0c040;text-decoration:none;}
+
+/* TOP BAR */
+.topbar{background:#0e0e0e;border-bottom:1px solid rgba(255,255,255,0.08);padding:10px 20px;display:flex;justify-content:space-between;align-items:center;font-size:11px;color:#555;font-family:'Courier New',monospace;position:sticky;top:0;z-index:100;}
+.dot{width:7px;height:7px;border-radius:50%;background:#4caf72;display:inline-block;margin-right:6px;animation:pulse 2s infinite;}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
+
+/* HERO */
+.hero{max-width:1100px;margin:0 auto;padding:40px 20px 28px;}
+.hero-label{font-size:10px;color:#f0c040;font-family:'Courier New',monospace;text-transform:uppercase;letter-spacing:.12em;margin-bottom:8px;}
+.hero-title{font-size:26px;font-weight:500;color:#fff;margin-bottom:6px;}
+.hero-sub{font-size:13px;color:#888;max-width:600px;}
+
+/* SITREP */
+.sitrep{max-width:1060px;margin:0 auto 20px;padding:0 20px;}
+.sitrep-inner{background:#161616;border:1px solid rgba(255,255,255,0.12);border-left:3px solid #f0c040;border-radius:6px;padding:14px 18px;}
+.sitrep-head{display:flex;justify-content:space-between;margin-bottom:8px;}
+.sitrep-ttl{font-size:11px;color:#f0c040;font-family:'Courier New',monospace;text-transform:uppercase;letter-spacing:.1em;}
+.sitrep-date{font-size:10px;color:#555;font-family:'Courier New',monospace;}
+#sr{width:100%;background:transparent;border:none;color:#999;font-size:13px;line-height:1.7;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;resize:none;outline:none;min-height:58px;}
+.sr-hint{font-size:10px;color:#444;margin-top:4px;font-family:'Courier New',monospace;}
+
+/* TILES */
+.tiles-wrap{max-width:1100px;margin:0 auto 0;padding:0 20px;}
+.tiles{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.06);border-radius:8px;overflow:hidden;}
+.tile{background:#161616;padding:14px 16px;}
+.tile:hover{background:#1a1a1a;}
+.tlabel{font-size:10px;color:#555;font-family:'Courier New',monospace;text-transform:uppercase;letter-spacing:.07em;margin-bottom:5px;}
+.tval{font-size:20px;font-weight:500;color:#fff;font-family:'Courier New',monospace;line-height:1.1;margin-bottom:3px;}
+.tunit{font-size:11px;font-weight:400;color:#777;}
+.tctx{font-size:11px;color:#555;line-height:1.4;}
+.t-red{border-top:2px solid #e05a5a;}
+.t-amber{border-top:2px solid #f0c040;}
+.t-green{border-top:2px solid #4caf72;}
+.up{color:#e05a5a;font-weight:500;}
+.dn{color:#4caf72;font-weight:500;}
+
+/* TABS */
+.tabs-wrap{max-width:1100px;margin:24px auto 0;padding:0 20px;}
+.tabs{display:flex;overflow-x:auto;border-bottom:1px solid rgba(255,255,255,0.08);}
+.tbtn{font-family:'Courier New',monospace;font-size:10px;padding:11px 16px;border:none;background:transparent;color:#555;cursor:pointer;border-bottom:2px solid transparent;white-space:nowrap;text-transform:uppercase;letter-spacing:.06em;transition:color .15s;}
+.tbtn:hover{color:#e8e8e8;}
+.tbtn.on{color:#f0c040;border-bottom-color:#f0c040;}
+
+/* PANELS */
+.panel{display:none;max-width:1100px;margin:0 auto;padding:24px 20px;}
+.panel.on{display:block;}
+
+/* SECTION TITLE */
+.sec{font-family:'Courier New',monospace;font-size:10px;color:#555;text-transform:uppercase;letter-spacing:.1em;margin:0 0 12px;padding-bottom:7px;border-bottom:1px solid rgba(255,255,255,0.07);}
+
+/* CHART BOX */
+.cbox{background:#161616;border:1px solid rgba(255,255,255,0.07);border-radius:8px;padding:18px;margin-bottom:18px;}
+.leg{display:flex;gap:14px;margin-bottom:10px;flex-wrap:wrap;}
+.leg span{display:flex;align-items:center;gap:5px;font-size:11px;color:#888;font-family:'Courier New',monospace;}
+.lsq{width:10px;height:10px;border-radius:2px;display:inline-block;}
+.cnote{font-size:11px;color:#444;font-family:'Courier New',monospace;margin-top:7px;}
+
+/* PLATFORM CARDS */
+.pcards{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:16px;}
+.pcard{background:#161616;border:1px solid rgba(255,255,255,0.07);border-radius:8px;padding:14px;}
+.pcard-u{border-top:2px solid #5b9bd5;}
+.pcard-b{border-top:2px solid #e8a020;}
+.pcard-y{border-top:2px solid #4caf72;}
+.pname{font-size:13px;font-weight:500;margin-bottom:10px;font-family:'Courier New',monospace;}
+.psec{font-family:'Courier New',monospace;font-size:9px;color:#444;text-transform:uppercase;letter-spacing:.1em;padding:5px 0 2px;border-top:1px solid rgba(255,255,255,0.06);margin-top:5px;}
+.prow{display:flex;justify-content:space-between;align-items:center;font-size:12px;padding:4px 0;border-bottom:1px solid rgba(255,255,255,0.05);}
+.prow:last-child{border-bottom:none;}
+.prow span:first-child{color:#777;}
+.ed{background:transparent;border:none;color:#e8e8e8;font-size:12px;font-weight:500;text-align:right;width:100px;font-family:'Courier New',monospace;padding:0;outline:none;}
+.ed:focus{border-bottom:1px solid #f0c040;color:#f0c040;}
+.ed::placeholder{color:#444;}
+.frow{display:flex;justify-content:space-between;align-items:center;font-size:12px;padding:4px 7px;background:#1a1a1a;border-radius:3px;margin:2px 0;}
+.frow span:first-child{color:#777;}
+
+/* BREAKDOWNS */
+.bdgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:12px;}
+.bd{font-size:11px;color:#777;padding-top:8px;border-top:1px solid rgba(255,255,255,0.07);font-family:'Courier New',monospace;}
+.bdr{display:flex;justify-content:space-between;padding:2px 0;}
+.bdt{font-weight:500;color:#e8e8e8;border-top:1px solid rgba(255,255,255,0.1);margin-top:4px;padding-top:4px;}
+
+/* TABLES */
+.tbl{width:100%;border-collapse:collapse;font-size:12px;}
+.tbl th{font-family:'Courier New',monospace;font-size:10px;text-transform:uppercase;letter-spacing:.06em;color:#555;text-align:left;padding:8px 10px;border-bottom:1px solid rgba(255,255,255,0.1);}
+.tbl td{padding:9px 10px;border-bottom:1px solid rgba(255,255,255,0.05);color:#888;}
+.tbl tr:last-child td{border-bottom:none;}
+.tbl tr:hover td{background:rgba(255,255,255,0.02);}
+.tn{font-weight:500;color:#e8e8e8;}
+.bw{display:flex;align-items:center;gap:8px;}
+.bbg{flex:1;height:5px;background:#1f1f1f;border-radius:3px;overflow:hidden;}
+.bf{height:5px;border-radius:3px;}
+.pv{font-family:'Courier New',monospace;font-size:12px;font-weight:500;min-width:46px;text-align:right;}
+.bch{background:rgba(76,175,114,.15);color:#4caf72;border:1px solid rgba(76,175,114,.25);font-size:9px;padding:2px 6px;border-radius:3px;font-family:'Courier New',monospace;}
+.bmd{background:rgba(240,192,64,.1);color:#f0c040;border:1px solid rgba(240,192,64,.2);font-size:9px;padding:2px 6px;border-radius:3px;font-family:'Courier New',monospace;}
+.bhi{background:rgba(224,90,90,.1);color:#e05a5a;border:1px solid rgba(224,90,90,.2);font-size:9px;padding:2px 6px;border-radius:3px;font-family:'Courier New',monospace;}
+.hlrow td{background:rgba(240,192,64,.04);}
+.hlrow td:first-child{border-left:2px solid #f0c040;}
+
+/* FUEL TIMELINE */
+.ftl{padding-left:24px;position:relative;}
+.ftl:before{content:'';position:absolute;left:5px;top:0;bottom:0;width:1px;background:rgba(255,255,255,0.1);}
+.ftli{position:relative;margin-bottom:22px;}
+.ftldot{position:absolute;left:-22px;top:3px;width:10px;height:10px;border-radius:50%;border:2px solid #0e0e0e;z-index:1;}
+.ftldate{font-family:'Courier New',monospace;font-size:10px;color:#555;margin-bottom:3px;text-transform:uppercase;letter-spacing:.05em;}
+.ftltitle{font-size:13px;font-weight:500;color:#e8e8e8;margin-bottom:3px;}
+.ftlbody{font-size:12px;color:#777;line-height:1.55;}
+.ftlp{display:flex;gap:8px;margin-top:6px;flex-wrap:wrap;}
+.fp{font-family:'Courier New',monospace;font-size:11px;padding:2px 9px;border-radius:3px;background:#1a1a1a;border:1px solid rgba(255,255,255,0.08);}
+
+/* TIMELINE */
+.tli{display:flex;gap:12px;padding:9px 0;border-bottom:1px solid rgba(255,255,255,0.05);}
+.tli:last-child{border-bottom:none;}
+.tlid{font-family:'Courier New',monospace;font-size:10px;color:#555;min-width:70px;padding-top:1px;}
+.tlib{font-size:12px;color:#777;flex:1;line-height:1.5;}
+.tag{display:inline-block;font-size:9px;padding:2px 6px;border-radius:3px;margin-right:5px;font-family:'Courier New',monospace;text-transform:uppercase;letter-spacing:.04em;font-weight:500;}
+.tg-f{background:rgba(240,192,64,.12);color:#f0c040;border:1px solid rgba(240,192,64,.2);}
+.tg-r{background:rgba(91,155,213,.12);color:#5b9bd5;border:1px solid rgba(91,155,213,.2);}
+.tg-p{background:rgba(76,175,114,.12);color:#4caf72;border:1px solid rgba(76,175,114,.2);}
+.tg-a{background:rgba(224,90,90,.12);color:#e05a5a;border:1px solid rgba(224,90,90,.2);}
+
+/* INITIATIVES */
+.ifilters{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px;}
+.ifbtn{font-family:'Courier New',monospace;font-size:10px;padding:4px 11px;border-radius:3px;border:1px solid rgba(255,255,255,0.12);cursor:pointer;background:transparent;color:#555;text-transform:uppercase;letter-spacing:.04em;transition:all .15s;}
+.ifbtn:hover{color:#e8e8e8;}
+.ifbtn.on{background:#f0c040;color:#000;border-color:#f0c040;}
+.iitem{background:#161616;border:1px solid rgba(255,255,255,0.07);border-radius:6px;padding:12px;margin-bottom:8px;}
+.ihead{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:6px;}
+.ititl{font-size:13px;font-weight:500;color:#e8e8e8;flex:1;margin-right:8px;}
+.ist{font-family:'Courier New',monospace;font-size:9px;padding:2px 7px;border-radius:3px;font-weight:500;text-transform:uppercase;letter-spacing:.04em;}
+.sl{background:rgba(76,175,114,.12);color:#4caf72;border:1px solid rgba(76,175,114,.25);}
+.sp{background:rgba(91,155,213,.12);color:#5b9bd5;border:1px solid rgba(91,155,213,.25);}
+.se{background:rgba(255,255,255,.05);color:#555;border:1px solid rgba(255,255,255,.1);}
+.imeta{margin-bottom:4px;display:flex;align-items:center;gap:5px;flex-wrap:wrap;}
+.idesc{font-size:12px;color:#777;line-height:1.5;}
+.ptag{font-family:'Courier New',monospace;font-size:9px;padding:2px 6px;border-radius:3px;font-weight:500;text-transform:uppercase;letter-spacing:.04em;}
+.pt-u{background:rgba(91,155,213,.12);color:#5b9bd5;border:1px solid rgba(91,155,213,.2);}
+.pt-b{background:rgba(232,160,32,.12);color:#e8a020;border:1px solid rgba(232,160,32,.2);}
+.pt-y{background:rgba(76,175,114,.12);color:#4caf72;border:1px solid rgba(76,175,114,.2);}
+.pt-a{background:rgba(255,255,255,.05);color:#777;border:1px solid rgba(255,255,255,.1);}
+.ctag{font-family:'Courier New',monospace;font-size:9px;padding:2px 6px;border-radius:3px;text-transform:uppercase;letter-spacing:.04em;color:#555;border:1px solid rgba(255,255,255,.08);}
+.bdel{background:transparent;border:none;color:#444;cursor:pointer;font-size:12px;padding:0 0 0 6px;}
+.bdel:hover{color:#e05a5a;}
+
+/* ADD FORM */
+.aform{background:#161616;border:1px solid rgba(255,255,255,0.07);border-radius:8px;padding:16px;margin-bottom:18px;}
+.afttl{font-family:'Courier New',monospace;font-size:10px;color:#555;text-transform:uppercase;letter-spacing:.08em;margin-bottom:12px;}
+.fg3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:8px;}
+.fg2{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px;}
+.fl{font-family:'Courier New',monospace;font-size:10px;color:#555;display:block;margin-bottom:3px;text-transform:uppercase;letter-spacing:.05em;}
+.fi{font-size:12px;padding:6px 9px;border:1px solid rgba(255,255,255,.1);border-radius:4px;background:#1a1a1a;color:#e8e8e8;width:100%;outline:none;transition:border .15s;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;}
+.fi:focus{border-color:#f0c040;}
+textarea.fi{resize:vertical;min-height:48px;}
+.abtn{font-family:'Courier New',monospace;font-size:11px;padding:6px 16px;border-radius:3px;border:1px solid #f0c040;cursor:pointer;background:transparent;color:#f0c040;text-transform:uppercase;letter-spacing:.05em;transition:all .15s;}
+.abtn:hover{background:#f0c040;color:#000;}
+
+/* IMPACT */
+.igrid{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+.ic{background:#161616;border:1px solid rgba(255,255,255,0.07);border-radius:8px;padding:14px;}
+.icttl{font-family:'Courier New',monospace;font-size:10px;color:#f0c040;text-transform:uppercase;letter-spacing:.07em;margin-bottom:8px;}
+.icrow{font-size:12px;color:#777;padding:3px 0;display:flex;gap:6px;}
+.icrow:before{content:"›";color:#444;}
+
+/* SOURCES */
+.sgrid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px;}
+.scard{background:#161616;border:1px solid rgba(255,255,255,0.07);border-radius:8px;padding:14px;}
+.scttl{font-family:'Courier New',monospace;font-size:10px;color:#f0c040;text-transform:uppercase;letter-spacing:.07em;margin-bottom:8px;}
+.srow{display:flex;gap:8px;padding:5px 0;border-bottom:1px solid rgba(255,255,255,.05);font-size:12px;}
+.srow:last-child{border-bottom:none;}
+.stag{font-family:'Courier New',monospace;font-size:9px;padding:2px 5px;border-radius:3px;background:#1a1a1a;color:#555;border:1px solid rgba(255,255,255,.07);white-space:nowrap;align-self:flex-start;margin-top:1px;}
+.sinfo{color:#777;line-height:1.5;}
+.mbox{background:#161616;border:1px solid rgba(255,255,255,0.07);border-radius:8px;padding:14px;}
+.mttl{font-family:'Courier New',monospace;font-size:10px;color:#555;text-transform:uppercase;letter-spacing:.07em;margin-bottom:8px;}
+.mrow{font-size:12px;color:#777;padding:5px 0;border-bottom:1px solid rgba(255,255,255,.05);display:flex;justify-content:space-between;gap:12px;}
+.mrow:last-child{border-bottom:none;}
+.mrow span:first-child{color:#444;font-family:'Courier New',monospace;font-size:11px;white-space:nowrap;}
+
+/* FOOTER */
+.footer{border-top:1px solid rgba(255,255,255,0.07);padding:14px 20px;display:flex;justify-content:space-between;align-items:center;max-width:1100px;margin:20px auto 0;}
+.footer span{font-family:'Courier New',monospace;font-size:10px;color:#444;}
+.sbtn{font-family:'Courier New',monospace;font-size:10px;padding:5px 12px;border:1px solid rgba(255,255,255,.1);border-radius:3px;background:transparent;color:#777;cursor:pointer;text-transform:uppercase;letter-spacing:.05em;transition:all .15s;}
+.sbtn:hover{border-color:#f0c040;color:#f0c040;}
+
+.infobox{background:#161616;border:1px solid rgba(255,255,255,0.07);border-radius:6px;padding:12px 16px;margin-top:6px;}
+.infobox-ttl{font-family:'Courier New',monospace;font-size:10px;color:#f0c040;text-transform:uppercase;letter-spacing:.07em;margin-bottom:6px;}
+.infobox-body{font-size:12px;color:#777;line-height:1.6;}
+
+@media(max-width:700px){
+  .tiles{grid-template-columns:1fr 1fr;}
+  .pcards,.fg3,.sgrid,.igrid{grid-template-columns:1fr;}
+  .bdgrid{grid-template-columns:1fr;}
+  .hero-title{font-size:20px;}
+}
 </style>
 </head>
 <body>
 
 <div class="topbar">
-  <div style="display:flex;align-items:center;gap:20px;">
-    <span><span class="dot"></span>&nbsp; Monitoring</span>
-    <span id="day-count">Ghana Ops Tracker</span>
-  </div>
-  <div style="display:flex;gap:16px;">
-    <span>Updated: Apr 2026</span>
+  <div><span class="dot"></span><span id="daycount" style="font-size:11px;">Ghana Ops Tracker</span></div>
+  <div style="display:flex;gap:16px;font-size:11px;">
+    <span>Apr 2026</span>
     <span>koffiloukouserge</span>
   </div>
 </div>
@@ -187,650 +214,534 @@ textarea.fi{resize:vertical;min-height:52px;}
 <div class="hero">
   <div class="hero-label">● Uber Ghana Ops Tracker · Gbairai Market Overview</div>
   <div class="hero-title">Ghana Fuel & Ride-Hailing Tracker</div>
-  <div class="hero-sub">NPA pump prices · Uber · Bolt · Yango · Accra — tracking fuel costs, platform fares, and impact on drivers and passengers.</div>
+  <div class="hero-sub">NPA pump prices · Uber · Bolt · Yango · Accra</div>
 </div>
 
-<div class="sitrep" style="padding:16px 20px;margin:24px auto;max-width:1052px;">
-  <div class="sitrep-hdr">
-    <div class="sitrep-ttl">🚨 Situation Report</div>
-    <div class="sitrep-meta">Apr 2026</div>
+<div class="sitrep">
+  <div class="sitrep-inner">
+    <div class="sitrep-head">
+      <div class="sitrep-ttl">Situation Report</div>
+      <div class="sitrep-date">Apr 2026</div>
+    </div>
+    <textarea id="sr" oninput="this.style.height='auto';this.style.height=this.scrollHeight+'px'" onchange="persist()">NPA sets new price floor for April 2026: Petrol GHS 13.30/L (+15% vs March), Diesel GHS 17.10/L (+19% vs March). Cedi has strengthened to GHS 11.00/USD. Ride-hailing: Uber base fare GHS 22 (service fee 24-32% variable), Bolt GHS 23 (20% variable), Yango GHS 15 (18% variable). Ghana Online Drivers Union confirms GPRTU 15% fare cut does not apply to Uber, Bolt or Yango.</textarea>
+    <div class="sr-hint">click to edit · auto-saves</div>
   </div>
-  <textarea id="sitrep-content" oninput="autoResize(this)" onchange="persist()">NPA sets new price floor for April 2026: Petrol GHS 13.30/L (+15% vs March), Diesel GHS 17.10/L (+19% vs March). Competition among OMCs is intense — GOIL and Star Oil match the NPA floor exactly, while TotalEnergies prices petrol at GHS 14.49 and PETROSOL at GHS 13.98. Driven by the Hormuz crisis pushing crude +55% in March — record monthly gain since 1988. Cedi has strengthened to GHS 11.00/USD ($1 = GHS 11). Ride-hailing: Uber base fare GHS 22 (service fee 24–32% variable), Bolt GHS 23 (20% variable), Yango GHS 15 (18% variable). Ghana Online Drivers Union confirms GPRTU 15% fare cut does not apply to Uber, Bolt or Yango.</textarea>
-  <div class="sr-hint">✎ Click to edit · auto-saves</div>
 </div>
 
 <div class="tiles-wrap">
-  <div class="tiles-grid">
-    <div class="tile t-red"><div class="tile-label">Petrol — NPA floor</div><div class="tile-value">13.30 <span class="tile-unit">GHS/L</span></div><div class="tile-ctx"><span class="up">+15%</span> vs Mar 2026 · GHS 11.57→13.30</div></div>
-    <div class="tile t-red"><div class="tile-label">Diesel — NPA floor</div><div class="tile-value">17.10 <span class="tile-unit">GHS/L</span></div><div class="tile-ctx"><span class="up">+19%</span> vs Mar 2026 · GHS 14.35→17.10</div></div>
-    <div class="tile t-red"><div class="tile-label">Petrol vs 2020</div><div class="tile-value">+165%</div><div class="tile-ctx">GHS 5.00 → 13.30 · 4-year cumulative rise</div></div>
-    <div class="tile t-green"><div class="tile-label">Cedi (GHS/USD)</div><div class="tile-value">11.0</div><div class="tile-ctx"><span class="dn">Strengthened</span> · $1 = GHS 11.00</div></div>
-    <div class="tile t-amber"><div class="tile-label">Uber — base fare</div><div class="tile-value" id="tile-u">22.00 <span class="tile-unit">GHS</span></div><div class="tile-ctx">Service fee 24–32% (variable) · DTF GHS 1.00</div></div>
-    <div class="tile t-amber"><div class="tile-label">Bolt — base fare</div><div class="tile-value" id="tile-b">23.00 <span class="tile-unit">GHS</span></div><div class="tile-ctx">Service fee 20% (variable) · DTF GHS 1.00</div></div>
-    <div class="tile t-green"><div class="tile-label">Yango — base fare</div><div class="tile-value" id="tile-y">15.00 <span class="tile-unit">GHS</span></div><div class="tile-ctx">Service fee 18% (variable) · DTF GHS 1.00</div></div>
-    <div class="tile t-red"><div class="tile-label">Driver fuel cost/day</div><div class="tile-value">GHS 342</div><div class="tile-ctx">200 km/day · 10L/100km · Apr diesel</div></div>
+  <div class="tiles">
+    <div class="tile t-red"><div class="tlabel">Petrol NPA floor</div><div class="tval">13.30 <span class="tunit">GHS/L</span></div><div class="tctx"><span class="up">+15%</span> vs Mar · GHS 11.57→13.30</div></div>
+    <div class="tile t-red"><div class="tlabel">Diesel NPA floor</div><div class="tval">17.10 <span class="tunit">GHS/L</span></div><div class="tctx"><span class="up">+19%</span> vs Mar · GHS 14.35→17.10</div></div>
+    <div class="tile t-green"><div class="tlabel">Cedi (GHS/USD)</div><div class="tval">11.0</div><div class="tctx"><span class="dn">Strengthened</span> · $1 = GHS 11.00</div></div>
+    <div class="tile t-red"><div class="tlabel">Petrol vs 2020</div><div class="tval">+165%</div><div class="tctx">GHS 5.00 → 13.30 · 4-year rise</div></div>
+    <div class="tile t-amber"><div class="tlabel">Uber base fare</div><div class="tval">22.00 <span class="tunit">GHS</span></div><div class="tctx">Service fee 24–32% variable</div></div>
+    <div class="tile t-amber"><div class="tlabel">Bolt base fare</div><div class="tval">23.00 <span class="tunit">GHS</span></div><div class="tctx">Service fee 20% variable</div></div>
+    <div class="tile t-green"><div class="tlabel">Yango base fare</div><div class="tval">15.00 <span class="tunit">GHS</span></div><div class="tctx">Service fee 18% variable</div></div>
+    <div class="tile t-red"><div class="tlabel">Driver fuel/day</div><div class="tval">GHS 342</div><div class="tctx">200km · 10L/100km · Apr diesel</div></div>
   </div>
 </div>
 
-<div class="tabs-outer">
+<div class="tabs-wrap">
   <div class="tabs">
-    <button class="tab-btn active" onclick="switchTab('overview',this)">Overview</button>
-    <button class="tab-btn" onclick="switchTab('fares',this)">Fare Structure</button>
-    <button class="tab-btn" onclick="switchTab('stations',this)">Station Prices</button>
-    <button class="tab-btn" onclick="switchTab('westaf',this)">West Africa</button>
-    <button class="tab-btn" onclick="switchTab('ftimeline',this)">Fuel History</button>
-    <button class="tab-btn" onclick="switchTab('initiatives',this)">Initiatives</button>
-    <button class="tab-btn" onclick="switchTab('impact',this)">Impact</button>
-    <button class="tab-btn" onclick="switchTab('sources',this)">Sources & Method</button>
+    <button class="tbtn on" onclick="tab('overview',this)">Overview</button>
+    <button class="tbtn" onclick="tab('fares',this)">Fare Structure</button>
+    <button class="tbtn" onclick="tab('stations',this)">Station Prices</button>
+    <button class="tbtn" onclick="tab('westaf',this)">West Africa</button>
+    <button class="tbtn" onclick="tab('fhistory',this)">Fuel History</button>
+    <button class="tbtn" onclick="tab('init',this)">Initiatives</button>
+    <button class="tbtn" onclick="tab('impact',this)">Impact</button>
+    <button class="tbtn" onclick="tab('sources',this)">Sources & Method</button>
   </div>
 </div>
 
 <!-- OVERVIEW -->
-<div id="tab-overview" class="tab-panel active">
+<div id="p-overview" class="panel on">
   <div class="sec">Fuel price history — Ghana (GHS/L)</div>
-  <div class="chart-card">
-    <div class="chart-legend">
-      <span><span class="leg-sq" style="background:#5b9bd5;"></span>Petrol RON91</span>
-      <span><span class="leg-sq" style="background:#e05a2b;"></span>Diesel</span>
-    </div>
-    <canvas id="cFuel" height="220"></canvas>
+  <div class="cbox">
+    <div class="leg"><span><span class="lsq" style="background:#5b9bd5"></span>Petrol RON91</span><span><span class="lsq" style="background:#e05a2b"></span>Diesel</span></div>
+    <canvas id="cFuel" style="width:100%;display:block;"></canvas>
   </div>
-  <div class="sec">Driver economics — daily fuel cost vs estimated earnings</div>
-  <div class="chart-card">
-    <div class="chart-legend">
-      <span><span class="leg-sq" style="background:#e05a5a;"></span>Daily fuel cost (GHS)</span>
-      <span><span class="leg-sq" style="background:#4caf72;"></span>Est. daily earnings (GHS)</span>
-    </div>
-    <canvas id="cDriver" height="200"></canvas>
-    <div class="note">200 km/day · 10L/100km consumption · avg GHS 30/trip · NPA floor prices.</div>
+  <div class="sec">Driver economics — daily fuel cost vs earnings (GHS)</div>
+  <div class="cbox">
+    <div class="leg"><span><span class="lsq" style="background:#e05a5a"></span>Daily fuel cost</span><span><span class="lsq" style="background:#4caf72"></span>Est. daily earnings</span></div>
+    <canvas id="cDriver" style="width:100%;display:block;"></canvas>
+    <div class="cnote">200 km/day · 10L/100km · avg GHS 30/trip · NPA floor prices.</div>
   </div>
-  <div class="sec">Estimated trip cost — 10 km · 15 min · 2 min wait</div>
-  <div class="chart-card">
-    <div class="chart-legend">
-      <span><span class="leg-sq" style="background:#5b9bd5;"></span>Uber</span>
-      <span><span class="leg-sq" style="background:#e8a020;"></span>Bolt</span>
-      <span><span class="leg-sq" style="background:#4caf72;"></span>Yango</span>
+  <div class="sec">Estimated trip cost — 10 km · 15 min · 2 min wait (GHS)</div>
+  <div class="cbox">
+    <div class="leg"><span><span class="lsq" style="background:#5b9bd5"></span>Uber</span><span><span class="lsq" style="background:#e8a020"></span>Bolt</span><span><span class="lsq" style="background:#4caf72"></span>Yango</span></div>
+    <canvas id="cFare" style="width:100%;display:block;"></canvas>
+    <div class="bdgrid">
+      <div class="bd" id="bdu"></div>
+      <div class="bd" id="bdb"></div>
+      <div class="bd" id="bdy"></div>
     </div>
-    <canvas id="cFare" height="200"></canvas>
-    <div class="bd-wrap">
-      <div class="bd" id="bd-uber"></div>
-      <div class="bd" id="bd-bolt"></div>
-      <div class="bd" id="bd-yango"></div>
-    </div>
-    <div class="note" style="margin-top:10px;">Fill in platform rates in Fare Structure tab to refine estimates.</div>
+    <div class="cnote" style="margin-top:8px;">Fill in platform rates in Fare Structure tab to refine estimates.</div>
   </div>
 </div>
 
-<!-- FARES -->
-<div id="tab-fares" class="tab-panel">
-  <div class="sec">Platform fare structure — Accra <span style="font-size:9px;font-weight:400;text-transform:none;letter-spacing:0;color:var(--text3);">&nbsp;click any value to edit</span></div>
-  <div class="platform-grid">
-    <div class="p-card p-card-u">
-      <div class="p-name" style="color:var(--blue);">Uber</div>
-      <div class="p-sec">Variable rates</div>
-      <div class="p-row"><span>Base fare</span><span>GHS <input class="editable" id="u-base" value="22.00" type="number" step="0.5" placeholder="—"></span></div>
-      <div class="p-row"><span>Per km</span><span>GHS <input class="editable" id="u-km" type="text" placeholder="—"></span></div>
-      <div class="p-row"><span>Per min</span><span>GHS <input class="editable" id="u-min" type="text" placeholder="—"></span></div>
-      <div class="p-row"><span>Wait time /min</span><span>GHS <input class="editable" id="u-wait" type="text" placeholder="—"></span></div>
-      <div class="p-row"><span>Min fare</span><span>GHS <input class="editable" id="u-minfr" type="text" placeholder="—"></span></div>
-      <div class="p-sec">Fees</div>
-      <div class="fee-row"><span>Service fee</span><span><input class="editable" id="u-booking" value="28" type="number" step="1" style="width:36px;"> % <span style="font-size:10px;color:var(--text3);">(24–32 var.)</span></span></div>
-      <div class="fee-row"><span>Platform fee (DTF)</span><span>GHS <input class="editable" id="u-platform" value="1.00" type="number" step="0.5"></span></div>
-      <div class="p-sec">Driver terms</div>
-      <div class="p-row"><span>Commission</span><span><input class="editable" id="u-comm" value="24–32% variable" type="text"></span></div>
-      <div class="p-row"><span>Last fare change</span><span><input class="editable" id="u-lastch" type="text" placeholder="—"></span></div>
+<!-- FARE STRUCTURE -->
+<div id="p-fares" class="panel">
+  <div class="sec">Platform fare structure — Accra <span style="font-size:9px;text-transform:none;letter-spacing:0;color:#444;">&nbsp;click values to edit</span></div>
+  <div class="pcards">
+    <div class="pcard pcard-u">
+      <div class="pname" style="color:#5b9bd5;">Uber</div>
+      <div class="psec">Variable rates</div>
+      <div class="prow"><span>Base fare</span><span>GHS <input class="ed" id="u-base" value="22.00" type="number" step="0.5"></span></div>
+      <div class="prow"><span>Per km</span><span>GHS <input class="ed" id="u-km" type="text" placeholder="—"></span></div>
+      <div class="prow"><span>Per min</span><span>GHS <input class="ed" id="u-min" type="text" placeholder="—"></span></div>
+      <div class="prow"><span>Wait time /min</span><span>GHS <input class="ed" id="u-wait" type="text" placeholder="—"></span></div>
+      <div class="prow"><span>Min fare</span><span>GHS <input class="ed" id="u-minfr" type="text" placeholder="—"></span></div>
+      <div class="psec">Fees</div>
+      <div class="frow"><span>Service fee</span><span><input class="ed" id="u-sf" value="28" type="number" step="1" style="width:38px;"> % <span style="font-size:10px;color:#444;">(24–32 var.)</span></span></div>
+      <div class="frow"><span>Platform fee (DTF)</span><span>GHS <input class="ed" id="u-pf" value="1.00" type="number" step="0.5" style="width:50px;"></span></div>
+      <div class="psec">Driver terms</div>
+      <div class="prow"><span>Commission</span><span><input class="ed" id="u-comm" value="24–32% variable" type="text"></span></div>
+      <div class="prow"><span>Last fare change</span><span><input class="ed" id="u-last" type="text" placeholder="—"></span></div>
     </div>
-    <div class="p-card p-card-b">
-      <div class="p-name" style="color:var(--orange);">Bolt</div>
-      <div class="p-sec">Variable rates</div>
-      <div class="p-row"><span>Base fare</span><span>GHS <input class="editable" id="b-base" value="23.00" type="text" placeholder="—"></span></div>
-      <div class="p-row"><span>Per km</span><span>GHS <input class="editable" id="b-km" type="text" placeholder="—"></span></div>
-      <div class="p-row"><span>Per min</span><span>GHS <input class="editable" id="b-min" type="text" placeholder="—"></span></div>
-      <div class="p-row"><span>Wait time /min</span><span>GHS <input class="editable" id="b-wait" type="text" placeholder="—"></span></div>
-      <div class="p-row"><span>Min fare</span><span>GHS <input class="editable" id="b-minfr" type="text" placeholder="—"></span></div>
-      <div class="p-sec">Fees</div>
-      <div class="fee-row"><span>Service fee</span><span><input class="editable" id="b-booking" value="20" type="number" step="1" style="width:36px;"> % <span style="font-size:10px;color:var(--text3);">(variable)</span></span></div>
-      <div class="fee-row"><span>Platform fee (DTF)</span><span>GHS <input class="editable" id="b-platform" value="1.00" type="number" step="0.5"></span></div>
-      <div class="p-sec">Driver terms</div>
-      <div class="p-row"><span>Commission</span><span><input class="editable" id="b-comm" value="20% variable" type="text"></span></div>
-      <div class="p-row"><span>Last fare change</span><span><input class="editable" id="b-lastch" type="text" placeholder="—"></span></div>
+    <div class="pcard pcard-b">
+      <div class="pname" style="color:#e8a020;">Bolt</div>
+      <div class="psec">Variable rates</div>
+      <div class="prow"><span>Base fare</span><span>GHS <input class="ed" id="b-base" value="23.00" type="text"></span></div>
+      <div class="prow"><span>Per km</span><span>GHS <input class="ed" id="b-km" type="text" placeholder="—"></span></div>
+      <div class="prow"><span>Per min</span><span>GHS <input class="ed" id="b-min" type="text" placeholder="—"></span></div>
+      <div class="prow"><span>Wait time /min</span><span>GHS <input class="ed" id="b-wait" type="text" placeholder="—"></span></div>
+      <div class="prow"><span>Min fare</span><span>GHS <input class="ed" id="b-minfr" type="text" placeholder="—"></span></div>
+      <div class="psec">Fees</div>
+      <div class="frow"><span>Service fee</span><span><input class="ed" id="b-sf" value="20" type="number" step="1" style="width:38px;"> % <span style="font-size:10px;color:#444;">(variable)</span></span></div>
+      <div class="frow"><span>Platform fee (DTF)</span><span>GHS <input class="ed" id="b-pf" value="1.00" type="number" step="0.5" style="width:50px;"></span></div>
+      <div class="psec">Driver terms</div>
+      <div class="prow"><span>Commission</span><span><input class="ed" id="b-comm" value="20% variable" type="text"></span></div>
+      <div class="prow"><span>Last fare change</span><span><input class="ed" id="b-last" type="text" placeholder="—"></span></div>
     </div>
-    <div class="p-card p-card-y">
-      <div class="p-name" style="color:var(--green);">Yango</div>
-      <div class="p-sec">Variable rates</div>
-      <div class="p-row"><span>Base fare</span><span>GHS <input class="editable" id="y-base" value="15.00" type="text" placeholder="—"></span></div>
-      <div class="p-row"><span>Per km</span><span>GHS <input class="editable" id="y-km" type="text" placeholder="—"></span></div>
-      <div class="p-row"><span>Per min</span><span>GHS <input class="editable" id="y-min" type="text" placeholder="—"></span></div>
-      <div class="p-row"><span>Wait time /min</span><span>GHS <input class="editable" id="y-wait" type="text" placeholder="—"></span></div>
-      <div class="p-row"><span>Min fare</span><span>GHS <input class="editable" id="y-minfr" type="text" placeholder="—"></span></div>
-      <div class="p-sec">Fees</div>
-      <div class="fee-row"><span>Service fee</span><span><input class="editable" id="y-booking" value="18" type="number" step="1" style="width:36px;"> % <span style="font-size:10px;color:var(--text3);">(variable)</span></span></div>
-      <div class="fee-row"><span>Platform fee (DTF)</span><span>GHS <input class="editable" id="y-platform" value="1.00" type="number" step="0.5"></span></div>
-      <div class="p-sec">Driver terms</div>
-      <div class="p-row"><span>Commission</span><span><input class="editable" id="y-comm" value="18% variable" type="text"></span></div>
-      <div class="p-row"><span>Last fare change</span><span><input class="editable" id="y-lastch" type="text" placeholder="—"></span></div>
+    <div class="pcard pcard-y">
+      <div class="pname" style="color:#4caf72;">Yango</div>
+      <div class="psec">Variable rates</div>
+      <div class="prow"><span>Base fare</span><span>GHS <input class="ed" id="y-base" value="15.00" type="text"></span></div>
+      <div class="prow"><span>Per km</span><span>GHS <input class="ed" id="y-km" type="text" placeholder="—"></span></div>
+      <div class="prow"><span>Per min</span><span>GHS <input class="ed" id="y-min" type="text" placeholder="—"></span></div>
+      <div class="prow"><span>Wait time /min</span><span>GHS <input class="ed" id="y-wait" type="text" placeholder="—"></span></div>
+      <div class="prow"><span>Min fare</span><span>GHS <input class="ed" id="y-minfr" type="text" placeholder="—"></span></div>
+      <div class="psec">Fees</div>
+      <div class="frow"><span>Service fee</span><span><input class="ed" id="y-sf" value="18" type="number" step="1" style="width:38px;"> % <span style="font-size:10px;color:#444;">(variable)</span></span></div>
+      <div class="frow"><span>Platform fee (DTF)</span><span>GHS <input class="ed" id="y-pf" value="1.00" type="number" step="0.5" style="width:50px;"></span></div>
+      <div class="psec">Driver terms</div>
+      <div class="prow"><span>Commission</span><span><input class="ed" id="y-comm" value="18% variable" type="text"></span></div>
+      <div class="prow"><span>Last fare change</span><span><input class="ed" id="y-last" type="text" placeholder="—"></span></div>
     </div>
   </div>
 </div>
 
 <!-- STATION PRICES -->
-<div id="tab-stations" class="tab-panel">
-  <div class="sec">Top 5 fuel station price comparison — Accra (Apr 2026, Window 1)</div>
-  <div class="chart-card" style="margin-bottom:16px;">
-    <canvas id="cStations" height="220"></canvas>
-    <div class="note" style="margin-top:8px;">Sources: CitiNewsroom · Energy Brief Ghana · COPEC market survey · Apr 1–5, 2026.</div>
+<div id="p-stations" class="panel">
+  <div class="sec">Top 5 station price comparison — Accra (Apr 2026, Window 1)</div>
+  <div class="cbox">
+    <div class="leg"><span><span class="lsq" style="background:#5b9bd5"></span>Petrol RON91</span><span><span class="lsq" style="background:#e05a2b"></span>Diesel</span></div>
+    <canvas id="cSta" style="width:100%;display:block;"></canvas>
+    <div class="cnote">Sources: CitiNewsroom · COPEC · Apr 1–5, 2026.</div>
   </div>
-  <div class="chart-card" style="padding:0;overflow:hidden;">
-    <table class="station-table">
-      <thead>
-        <tr>
-          <th>Station</th>
-          <th>Petrol RON91 (GHS/L)</th>
-          <th>Diesel (GHS/L)</th>
-          <th>vs NPA floor</th>
-          <th>Position</th>
-        </tr>
-      </thead>
+  <div class="cbox" style="padding:0;overflow:hidden;">
+    <table class="tbl">
+      <thead><tr><th>Station</th><th>Petrol (GHS/L)</th><th>Diesel (GHS/L)</th><th>vs NPA floor</th><th>Note</th></tr></thead>
       <tbody>
-        <tr>
-          <td><span class="station-name">Star Oil</span></td>
-          <td><div class="bar-wrap"><div class="bar-bg"><div class="bar-fill" style="width:83%;background:#4caf72;"></div></div><span class="price-val" style="color:var(--green);">13.30</span></div></td>
-          <td><span style="font-family:var(--mono);font-size:12px;">17.10</span></td>
-          <td><span class="badge-cheap">At floor</span></td>
-          <td style="font-size:11px;color:var(--text2);">Market leader · most outlets</td>
-        </tr>
-        <tr>
-          <td><span class="station-name">GOIL</span></td>
-          <td><div class="bar-wrap"><div class="bar-bg"><div class="bar-fill" style="width:83%;background:#4caf72;"></div></div><span class="price-val" style="color:var(--green);">13.30</span></div></td>
-          <td><span style="font-family:var(--mono);font-size:12px;">17.10</span></td>
-          <td><span class="badge-cheap">At floor</span></td>
-          <td style="font-size:11px;color:var(--text2);">National company · 400+ outlets</td>
-        </tr>
-        <tr>
-          <td><span class="station-name">PETROSOL</span></td>
-          <td><div class="bar-wrap"><div class="bar-bg"><div class="bar-fill" style="width:87%;background:var(--accent);"></div></div><span class="price-val" style="color:var(--accent);">13.98</span></div></td>
-          <td><span style="font-family:var(--mono);font-size:12px;">17.98</span></td>
-          <td><span class="badge-mid">+5.1%</span></td>
-          <td style="font-size:11px;color:var(--text2);">Mid-tier pricing</td>
-        </tr>
-        <tr>
-          <td><span class="station-name">Shell</span></td>
-          <td><div class="bar-wrap"><div class="bar-bg"><div class="bar-fill" style="width:90%;background:var(--accent);"></div></div><span class="price-val" style="color:var(--accent);">14.29</span></div></td>
-          <td><span style="font-family:var(--mono);font-size:12px;">15.89</span></td>
-          <td><span class="badge-mid">+7.4%</span></td>
-          <td style="font-size:11px;color:var(--text2);">Premium positioning</td>
-        </tr>
-        <tr>
-          <td><span class="station-name">TotalEnergies</span></td>
-          <td><div class="bar-wrap"><div class="bar-bg"><div class="bar-fill" style="width:100%;background:var(--red);"></div></div><span class="price-val" style="color:var(--red);">14.49</span></div></td>
-          <td><span style="font-family:var(--mono);font-size:12px;">18.50</span></td>
-          <td><span class="badge-high">+8.9%</span></td>
-          <td style="font-size:11px;color:var(--text2);">Premium brand · highest price</td>
-        </tr>
+        <tr><td><span class="tn">Star Oil</span></td><td><div class="bw"><div class="bbg"><div class="bf" style="width:83%;background:#4caf72;"></div></div><span class="pv" style="color:#4caf72;">13.30</span></div></td><td style="font-family:'Courier New',monospace;">17.10</td><td><span class="bch">At floor</span></td><td style="font-size:11px;">Market leader · most outlets</td></tr>
+        <tr><td><span class="tn">GOIL</span></td><td><div class="bw"><div class="bbg"><div class="bf" style="width:83%;background:#4caf72;"></div></div><span class="pv" style="color:#4caf72;">13.30</span></div></td><td style="font-family:'Courier New',monospace;">17.10</td><td><span class="bch">At floor</span></td><td style="font-size:11px;">National company · 400+ outlets</td></tr>
+        <tr><td><span class="tn">PETROSOL</span></td><td><div class="bw"><div class="bbg"><div class="bf" style="width:87%;background:#f0c040;"></div></div><span class="pv" style="color:#f0c040;">13.98</span></div></td><td style="font-family:'Courier New',monospace;">17.98</td><td><span class="bmd">+5.1%</span></td><td style="font-size:11px;">Mid-tier pricing</td></tr>
+        <tr><td><span class="tn">Shell</span></td><td><div class="bw"><div class="bbg"><div class="bf" style="width:89%;background:#f0c040;"></div></div><span class="pv" style="color:#f0c040;">14.29</span></div></td><td style="font-family:'Courier New',monospace;">15.89</td><td><span class="bmd">+7.4%</span></td><td style="font-size:11px;">Premium positioning</td></tr>
+        <tr><td><span class="tn">TotalEnergies</span></td><td><div class="bw"><div class="bbg"><div class="bf" style="width:100%;background:#e05a5a;"></div></div><span class="pv" style="color:#e05a5a;">14.49</span></div></td><td style="font-family:'Courier New',monospace;">18.50</td><td><span class="bhi">+8.9%</span></td><td style="font-size:11px;">Highest price</td></tr>
       </tbody>
     </table>
   </div>
-  <div style="background:var(--bg2);border:1px solid var(--border);border-radius:6px;padding:14px;margin-top:4px;">
-    <div style="font-family:var(--mono);font-size:10px;color:var(--accent);text-transform:uppercase;letter-spacing:.08em;margin-bottom:8px;">Key insight</div>
-    <div style="font-size:12px;color:var(--text2);line-height:1.6;">TotalEnergies prices petrol <strong style="color:var(--text);">GHS 1.19/L above</strong> Star Oil and GOIL. Over a 50L fill-up, that's a GHS 59.50 difference. Diesel spread is even wider — TotalEnergies at GHS 18.50 vs Star Oil/GOIL floor at GHS 17.10 (<strong style="color:var(--text);">+8.2%</strong>). Competition between Star Oil and GOIL is intensifying, with both anchoring at the NPA floor.</div>
+  <div class="infobox" style="margin-top:12px;">
+    <div class="infobox-ttl">Key insight</div>
+    <div class="infobox-body">TotalEnergies prices petrol <strong style="color:#e8e8e8;">GHS 1.19/L above</strong> Star Oil and GOIL. Over a 50L fill-up that's GHS 59.50 more. Competition between Star Oil and GOIL is intensifying — both anchoring at the NPA floor.</div>
   </div>
 </div>
 
 <!-- WEST AFRICA -->
-<div id="tab-westaf" class="tab-panel">
-  <div class="sec">West Africa petrol price comparison (USD/L · 2025–2026 est.)</div>
-  <div class="chart-card" style="margin-bottom:16px;">
-    <canvas id="cWestAf" height="240"></canvas>
-    <div class="note" style="margin-top:8px;">Sources: GlobalPetrolPrices.com · MEMAN · Radio Tamale · TRT Afrika · Legit.ng. Ghana in amber. USD/L for cross-border comparability.</div>
+<div id="p-westaf" class="panel">
+  <div class="sec">West Africa petrol price comparison (USD/L · 2025–2026)</div>
+  <div class="cbox">
+    <canvas id="cWA" style="width:100%;display:block;"></canvas>
+    <div class="cnote">Sources: GlobalPetrolPrices.com · MEMAN · Legit.ng. Ghana highlighted in amber.</div>
   </div>
-  <div class="chart-card" style="padding:0;overflow:hidden;">
-    <table class="wa-table">
-      <thead>
-        <tr>
-          <th>Country</th>
-          <th>Petrol (USD/L)</th>
-          <th>Local price</th>
-          <th>Subsidy</th>
-          <th>Note</th>
-        </tr>
-      </thead>
+  <div class="cbox" style="padding:0;overflow:hidden;">
+    <table class="tbl">
+      <thead><tr><th>Country</th><th>Petrol (USD/L)</th><th>Local price</th><th>Subsidy</th><th>Note</th></tr></thead>
       <tbody>
-        <tr><td><span class="station-name">Nigeria</span></td><td><span style="font-family:var(--mono);color:var(--green);">$0.60</span></td><td style="font-family:var(--mono);font-size:11px;">NGN 1,270/L</td><td style="font-size:11px;color:var(--green);">Partial (Dangote)</td><td style="font-size:11px;color:var(--text2);">Cheapest in W. Africa · Dangote refinery</td></tr>
-        <tr><td><span class="station-name">Liberia</span></td><td><span style="font-family:var(--mono);color:var(--green);">$0.87</span></td><td style="font-family:var(--mono);font-size:11px;">LRD ~162/L</td><td style="font-size:11px;color:var(--text3);">None</td><td style="font-size:11px;color:var(--text2);">Lower than regional avg</td></tr>
-        <tr class="highlight-row"><td><span class="station-name" style="color:var(--accent);">🇬🇭 Ghana</span></td><td><span style="font-family:var(--mono);color:var(--accent);">$0.86</span></td><td style="font-family:var(--mono);font-size:11px;">GHS 13.30/L</td><td style="font-size:11px;color:var(--text3);">None (deregulated)</td><td style="font-size:11px;color:var(--text2);">Fully market-priced · NPA regulated floor</td></tr>
-        <tr><td><span class="station-name">Togo</span></td><td><span style="font-family:var(--mono);color:var(--accent);">$1.00</span></td><td style="font-family:var(--mono);font-size:11px;">XOF ~640/L</td><td style="font-size:11px;color:var(--text3);">Partial</td><td style="font-size:11px;color:var(--text2);">Border arbitrage risk with Ghana</td></tr>
-        <tr><td><span class="station-name">Benin</span></td><td><span style="font-family:var(--mono);color:var(--accent);">$1.04</span></td><td style="font-family:var(--mono);font-size:11px;">XOF ~668/L</td><td style="font-size:11px;color:var(--text3);">None</td><td style="font-size:11px;color:var(--text2);">WAEMU zone pricing</td></tr>
-        <tr><td><span class="station-name">Côte d'Ivoire</span></td><td><span style="font-family:var(--mono);color:var(--red);">$1.49</span></td><td style="font-family:var(--mono);font-size:11px;">XOF 820/L</td><td style="font-size:11px;color:var(--text3);">Partial</td><td style="font-size:11px;color:var(--text2);">State-regulated · dropped 2024 for 1st time in 5yr</td></tr>
-        <tr><td><span class="station-name">Burkina Faso</span></td><td><span style="font-family:var(--mono);color:var(--red);">$1.51</span></td><td style="font-family:var(--mono);font-size:11px;">XOF ~965/L</td><td style="font-size:11px;color:var(--text3);">Partial</td><td style="font-size:11px;color:var(--text2);">Landlocked · high logistics cost</td></tr>
-        <tr><td><span class="station-name">Senegal</span></td><td><span style="font-family:var(--mono);color:var(--red);">$1.64</span></td><td style="font-family:var(--mono);font-size:11px;">XOF ~1,050/L</td><td style="font-size:11px;color:var(--text3);">None</td><td style="font-size:11px;color:var(--text2);">Most expensive in ECOWAS</td></tr>
+        <tr><td><span class="tn">Nigeria</span></td><td style="font-family:'Courier New',monospace;color:#4caf72;">$0.60</td><td style="font-family:'Courier New',monospace;font-size:11px;">NGN 1,270/L</td><td style="font-size:11px;color:#4caf72;">Partial</td><td style="font-size:11px;">Cheapest · Dangote refinery</td></tr>
+        <tr><td><span class="tn">Liberia</span></td><td style="font-family:'Courier New',monospace;color:#4caf72;">$0.87</td><td style="font-family:'Courier New',monospace;font-size:11px;">LRD ~162/L</td><td style="font-size:11px;color:#555;">None</td><td style="font-size:11px;">Below regional avg</td></tr>
+        <tr class="hlrow"><td><span class="tn" style="color:#f0c040;">🇬🇭 Ghana</span></td><td style="font-family:'Courier New',monospace;color:#f0c040;">$0.86</td><td style="font-family:'Courier New',monospace;font-size:11px;">GHS 13.30/L</td><td style="font-size:11px;color:#555;">None</td><td style="font-size:11px;">Fully deregulated · NPA floor</td></tr>
+        <tr><td><span class="tn">Togo</span></td><td style="font-family:'Courier New',monospace;color:#e05a5a;">$1.00</td><td style="font-family:'Courier New',monospace;font-size:11px;">XOF ~640/L</td><td style="font-size:11px;color:#555;">Partial</td><td style="font-size:11px;">Border arbitrage risk</td></tr>
+        <tr><td><span class="tn">Benin</span></td><td style="font-family:'Courier New',monospace;color:#e05a5a;">$1.04</td><td style="font-family:'Courier New',monospace;font-size:11px;">XOF ~668/L</td><td style="font-size:11px;color:#555;">None</td><td style="font-size:11px;">WAEMU zone</td></tr>
+        <tr><td><span class="tn">Côte d'Ivoire</span></td><td style="font-family:'Courier New',monospace;color:#e05a5a;">$1.49</td><td style="font-family:'Courier New',monospace;font-size:11px;">XOF 820/L</td><td style="font-size:11px;color:#555;">Partial</td><td style="font-size:11px;">State-regulated</td></tr>
+        <tr><td><span class="tn">Burkina Faso</span></td><td style="font-family:'Courier New',monospace;color:#e05a5a;">$1.51</td><td style="font-family:'Courier New',monospace;font-size:11px;">XOF ~965/L</td><td style="font-size:11px;color:#555;">Partial</td><td style="font-size:11px;">Landlocked · high logistics</td></tr>
+        <tr><td><span class="tn">Senegal</span></td><td style="font-family:'Courier New',monospace;color:#e05a5a;">$1.64</td><td style="font-family:'Courier New',monospace;font-size:11px;">XOF ~1,050/L</td><td style="font-size:11px;color:#555;">None</td><td style="font-size:11px;">Most expensive in ECOWAS</td></tr>
       </tbody>
     </table>
   </div>
-  <div style="background:var(--bg2);border:1px solid var(--border);border-radius:6px;padding:14px;margin-top:4px;">
-    <div style="font-family:var(--mono);font-size:10px;color:var(--accent);text-transform:uppercase;letter-spacing:.08em;margin-bottom:8px;">Ghana context</div>
-    <div style="font-size:12px;color:var(--text2);line-height:1.6;">At $0.86/L, Ghana is competitive regionally — cheaper than Côte d'Ivoire, Burkina Faso and Senegal. However Ghana's fuel is fully market-priced with no subsidy, meaning every global price shock passes through directly to consumers and drivers. Nigeria benefits from Dangote Refinery reducing import dependency. <strong style="color:var(--text);">Cedi update:</strong> $1 = GHS 11.00 (strengthened from ~15.5 earlier in 2026), which should ease future import cost pressures on pump prices.</div>
+  <div class="infobox" style="margin-top:12px;">
+    <div class="infobox-ttl">Ghana context</div>
+    <div class="infobox-body">At $0.86/L Ghana is competitive — cheaper than Côte d'Ivoire, Burkina Faso and Senegal. However Ghana's fuel is fully market-priced with no subsidy. Cedi now at GHS 11/USD (strengthened from ~15.5), which eases import cost pressures.</div>
   </div>
 </div>
 
-<!-- FUEL HISTORY TIMELINE -->
-<div id="tab-ftimeline" class="tab-panel">
+<!-- FUEL HISTORY -->
+<div id="p-fhistory" class="panel">
   <div class="sec">Fuel price increment history — Ghana 2020 to Apr 2026</div>
-  <div class="fuel-timeline">
-
-    <div class="ftl-item">
-      <div class="ftl-dot" style="background:var(--red);"></div>
-      <div class="ftl-date">Apr 2026 · Window 1</div>
-      <div class="ftl-title">NPA raises floor amid Hormuz crisis</div>
-      <div class="ftl-body">Global crude surged +55% in March 2026 — record since 1988. NPA forced to raise price floor sharply. Competition among OMCs intensifies: Star Oil and GOIL match the floor exactly. TotalEnergies prices GHS 1.19 above the minimum.</div>
-      <div class="ftl-prices"><span class="ftl-price" style="color:var(--red);">Petrol: GHS 13.30/L</span><span class="ftl-price" style="color:var(--red);">Diesel: GHS 17.10/L</span><span class="ftl-price">+15% petrol MoM</span></div>
-    </div>
-
-    <div class="ftl-item">
-      <div class="ftl-dot" style="background:var(--red);"></div>
-      <div class="ftl-date">Mar 2026 · Window 2 (Mar 16–31)</div>
-      <div class="ftl-title">Sharp mid-March increase</div>
-      <div class="ftl-body">Hormuz Strait transit collapses to near zero from Feb 28 following US-Iran conflict. Global crude shock begins propagating to retail pump prices. COMAC warns of 16–17% projected increases for April.</div>
-      <div class="ftl-prices"><span class="ftl-price" style="color:var(--accent);">Petrol: GHS 11.57/L</span><span class="ftl-price" style="color:var(--accent);">Diesel: GHS 14.35/L</span></div>
-    </div>
-
-    <div class="ftl-item">
-      <div class="ftl-dot" style="background:var(--green);"></div>
-      <div class="ftl-date">Jan 2026 · Window 1 (Jan 1–15)</div>
-      <div class="ftl-title">Significant price relief — cedi strengthens</div>
-      <div class="ftl-body">Cedi appreciated 8.2% vs USD (GHS 11.14→10.50). Global crude fell. Star Oil led cuts to GHS 10.56/L — lowest price in years. GOIL followed with GHS 10.99, later GHS 9.99 at 150 selected stations in Window 2. COPEC urged OMCs and ride-hailing platforms to pass savings to consumers.</div>
-      <div class="ftl-prices"><span class="ftl-price" style="color:var(--green);">Petrol: GHS 10.56–10.99/L</span><span class="ftl-price" style="color:var(--green);">Diesel: GHS 11.56–11.96/L</span><span class="ftl-price">Best price since 2023</span></div>
-    </div>
-
-    <div class="ftl-item">
-      <div class="ftl-dot" style="background:var(--red);"></div>
-      <div class="ftl-date">Jul 2025</div>
-      <div class="ftl-title">D-Levy enforcement — GHS 1.00 energy sector levy</div>
-      <div class="ftl-body">Ghana Revenue Authority enforces Energy Sector Levies (Amendment) Act 1141. GHS 1.00/L surcharge on petrol and diesel to address energy sector debt exceeding $3 billion. Prices spike ~14.6% from previous window. GOIL: petrol GHS 12.88/L, diesel GHS 14.38/L. Star Oil: petrol GHS 12.77/L.</div>
-      <div class="ftl-prices"><span class="ftl-price" style="color:var(--red);">Petrol: GHS 12.77–12.88/L</span><span class="ftl-price" style="color:var(--red);">Diesel: GHS 13.45–14.38/L</span><span class="ftl-price">+GHS 1.00 D-Levy</span></div>
-    </div>
-
-    <div class="ftl-item">
-      <div class="ftl-dot" style="background:var(--green);"></div>
-      <div class="ftl-date">Jan–Feb 2025</div>
-      <div class="ftl-title">Moderate relief as global crude eases</div>
-      <div class="ftl-body">GOIL petrol drops from GHS 14.99 to GHS 12.28. TotalEnergies and Shell cut by ~GHS 3.80/L. Cedi showed some resilience early 2025. COPEC welcomed reductions but noted not all OMCs passed on savings immediately due to expensive stock.</div>
-      <div class="ftl-prices"><span class="ftl-price" style="color:var(--green);">Petrol: GHS 12.28/L (GOIL)</span><span class="ftl-price" style="color:var(--green);">Diesel: GHS 12.77/L</span></div>
-    </div>
-
-    <div class="ftl-item">
-      <div class="ftl-dot" style="background:var(--accent);"></div>
-      <div class="ftl-date">2024</div>
-      <div class="ftl-title">Sustained high prices — cedi depreciation 40.88%</div>
-      <div class="ftl-body">Cedi depreciated 40.88% against USD in 2024 — worst year on record. Petrol and diesel averaged 10% higher than 2023. Prices stayed above GHS 13/L for most of year. VIT (Vehicle Income Tax) introduced in January 2024 for ride-hailing vehicles. GOIL: petrol GHS 14.42/L (Aug 2024).</div>
-      <div class="ftl-prices"><span class="ftl-price" style="color:var(--red);">Petrol avg: ~GHS 13–14.50/L</span><span class="ftl-price" style="color:var(--red);">Diesel avg: ~GHS 14–15/L</span><span class="ftl-price">Cedi −40.88% vs USD</span></div>
-    </div>
-
-    <div class="ftl-item">
-      <div class="ftl-dot" style="background:var(--red);"></div>
-      <div class="ftl-date">Apr 2023</div>
-      <div class="ftl-title">Digital Transport Fee introduced — GHS 1.00/trip</div>
-      <div class="ftl-body">DTF GHS 1.00 per completed trip introduced for all ride-hailing platforms. Uber raises minimum fare GHS 7→8 (+14%), cuts driver commission 25%→20% in compensation. Fuel at ~GHS 10–11/L following post-2022 correction.</div>
-      <div class="ftl-prices"><span class="ftl-price">Petrol: ~GHS 10.50/L</span><span class="ftl-price">DTF: GHS 1.00/trip added</span></div>
-    </div>
-
-    <div class="ftl-item">
-      <div class="ftl-dot" style="background:var(--red);"></div>
-      <div class="ftl-date">Nov 2022 — All-time high</div>
-      <div class="ftl-title">Petrol peaks at GHS 18.85/L — all-time record</div>
-      <div class="ftl-body">Global energy crisis + Russia-Ukraine war + G7 oil price cap + cedi depreciation of 40%+ in 2022. Ghana enters debt crisis. Petrol hits all-time high GHS 18.85/L. Diesel follows at similar levels. Severe economic hardship for drivers and households.</div>
-      <div class="ftl-prices"><span class="ftl-price" style="color:var(--red);">Petrol: GHS 18.85/L ← all-time high</span><span class="ftl-price" style="color:var(--red);">Cedi: −40%+ vs USD in 2022</span></div>
-    </div>
-
-    <div class="ftl-item">
-      <div class="ftl-dot" style="background:var(--accent);"></div>
-      <div class="ftl-date">2021</div>
-      <div class="ftl-title">Post-COVID recovery — gradual price rise</div>
-      <div class="ftl-body">Global crude recovers from COVID lows. Supply chain disruptions and rising freight costs push prices up. Petrol climbs from below GHS 5/L to ~GHS 5.50/L. Ride-hailing demand recovers as mobility returns.</div>
-      <div class="ftl-prices"><span class="ftl-price">Petrol: ~GHS 5.50/L</span><span class="ftl-price">Diesel: ~GHS 5.20/L</span></div>
-    </div>
-
-    <div class="ftl-item">
-      <div class="ftl-dot" style="background:var(--green);"></div>
-      <div class="ftl-date">2020 — Baseline</div>
-      <div class="ftl-title">COVID lows — petrol below GHS 5/L</div>
-      <div class="ftl-body">COVID-19 lockdowns collapse global oil demand. Crude prices historic low. Ghana pump prices subdued. Petrol stays below GHS 5/L. This is the baseline for all subsequent % comparisons.</div>
-      <div class="ftl-prices"><span class="ftl-price" style="color:var(--green);">Petrol: ~GHS 4.80/L ← baseline</span><span class="ftl-price" style="color:var(--green);">Diesel: ~GHS 4.50/L</span></div>
-    </div>
-
+  <div class="ftl">
+    <div class="ftli"><div class="ftldot" style="background:#e05a5a;"></div><div class="ftldate">Apr 2026 · Window 1</div><div class="ftltitle">NPA raises floor amid Hormuz crisis</div><div class="ftlbody">Global crude +55% in March 2026 — record since 1988. GOIL and Star Oil match NPA floor exactly. TotalEnergies prices GHS 1.19 above minimum.</div><div class="ftlp"><span class="fp" style="color:#e05a5a;">Petrol: GHS 13.30/L</span><span class="fp" style="color:#e05a5a;">Diesel: GHS 17.10/L</span><span class="fp">+15% petrol MoM</span></div></div>
+    <div class="ftli"><div class="ftldot" style="background:#e05a5a;"></div><div class="ftldate">Mar 2026 · Window 2</div><div class="ftltitle">Sharp mid-March increase</div><div class="ftlbody">Hormuz Strait transit collapses to near zero from Feb 28 following US-Iran conflict. Global supply shock begins propagating to retail pump prices.</div><div class="ftlp"><span class="fp" style="color:#f0c040;">Petrol: GHS 11.57/L</span><span class="fp" style="color:#f0c040;">Diesel: GHS 14.35/L</span></div></div>
+    <div class="ftli"><div class="ftldot" style="background:#4caf72;"></div><div class="ftldate">Jan 2026 · Window 1</div><div class="ftltitle">Significant relief — cedi strengthens</div><div class="ftlbody">Cedi appreciated 8.2% vs USD. Star Oil led cuts to GHS 10.56/L — lowest in years. GOIL followed at GHS 9.99 at 150 selected stations. COPEC urged ride-hailing platforms to pass savings to consumers.</div><div class="ftlp"><span class="fp" style="color:#4caf72;">Petrol: GHS 10.56–10.99/L</span><span class="fp" style="color:#4caf72;">Best price since 2023</span></div></div>
+    <div class="ftli"><div class="ftldot" style="background:#e05a5a;"></div><div class="ftldate">Jul 2025</div><div class="ftltitle">D-Levy enforcement — GHS 1.00 energy levy</div><div class="ftlbody">Energy Sector Levies Act 1141 enforced. GHS 1.00/L on petrol and diesel. Prices spike ~14.6%. GOIL: petrol GHS 12.88/L, diesel GHS 14.38/L.</div><div class="ftlp"><span class="fp" style="color:#e05a5a;">Petrol: GHS 12.77–12.88/L</span><span class="fp" style="color:#e05a5a;">+GHS 1.00 D-Levy</span></div></div>
+    <div class="ftli"><div class="ftldot" style="background:#4caf72;"></div><div class="ftldate">Jan–Feb 2025</div><div class="ftltitle">Moderate relief</div><div class="ftlbody">GOIL petrol drops from GHS 14.99 to GHS 12.28. TotalEnergies and Shell cut by ~GHS 3.80/L. Cedi showed resilience early 2025.</div><div class="ftlp"><span class="fp" style="color:#4caf72;">Petrol: GHS 12.28/L</span><span class="fp" style="color:#4caf72;">Diesel: GHS 12.77/L</span></div></div>
+    <div class="ftli"><div class="ftldot" style="background:#e05a5a;"></div><div class="ftldate">2024</div><div class="ftltitle">Sustained high prices — cedi −40.88%</div><div class="ftlbody">Cedi depreciated 40.88% vs USD in 2024. VIT (Vehicle Income Tax) introduced Jan 2024 for ride-hailing. GOIL petrol peaked at GHS 14.42/L (Aug 2024).</div><div class="ftlp"><span class="fp" style="color:#e05a5a;">Petrol avg: GHS 13–14.50/L</span><span class="fp" style="color:#e05a5a;">Cedi −40.88%</span></div></div>
+    <div class="ftli"><div class="ftldot" style="background:#e05a5a;"></div><div class="ftldate">Apr 2023</div><div class="ftltitle">Digital Transport Fee — GHS 1.00/trip</div><div class="ftlbody">DTF GHS 1.00/trip introduced. Uber raises min fare GHS 7→8, cuts commission 25%→20%.</div><div class="ftlp"><span class="fp">Petrol: ~GHS 10.50/L</span><span class="fp" style="color:#e05a5a;">DTF: GHS 1.00/trip</span></div></div>
+    <div class="ftli"><div class="ftldot" style="background:#e05a5a;"></div><div class="ftldate">Nov 2022 — ATH</div><div class="ftltitle">Petrol peaks at GHS 18.85/L</div><div class="ftlbody">Global energy crisis + Russia-Ukraine war + cedi depreciation 40%+. Ghana enters debt crisis. All-time high at pump.</div><div class="ftlp"><span class="fp" style="color:#e05a5a;">Petrol: GHS 18.85/L ← all-time high</span></div></div>
+    <div class="ftli"><div class="ftldot" style="background:#4caf72;"></div><div class="ftldate">2020 — Baseline</div><div class="ftltitle">COVID lows — petrol below GHS 5/L</div><div class="ftlbody">COVID lockdowns collapse global oil demand. Pump prices subdued. Baseline for all subsequent % comparisons.</div><div class="ftlp"><span class="fp" style="color:#4caf72;">Petrol: ~GHS 4.80/L ← baseline</span><span class="fp" style="color:#4caf72;">Diesel: ~GHS 4.50/L</span></div></div>
   </div>
 </div>
 
 <!-- INITIATIVES -->
-<div id="tab-initiatives" class="tab-panel">
+<div id="p-init" class="panel">
   <div class="sec">Features & initiatives log</div>
-  <div class="add-form">
-    <div class="add-form-title">+ Add new initiative</div>
+  <div class="aform">
+    <div class="afttl">+ Add new initiative</div>
     <div class="fg3">
-      <div><span class="fl">Platform</span><select class="fi" id="new-platform"><option value="uber">Uber</option><option value="bolt">Bolt</option><option value="yango">Yango</option><option value="all">All platforms</option></select></div>
-      <div><span class="fl">Category</span><select class="fi" id="new-cat"><option value="feature">Feature</option><option value="promo">Promo / Incentive</option><option value="driver">Driver program</option><option value="policy">Policy</option><option value="fare">Fare change</option></select></div>
-      <div><span class="fl">Status</span><select class="fi" id="new-status"><option value="live">Live</option><option value="planned">Planned</option><option value="ended">Ended</option></select></div>
+      <div><span class="fl">Platform</span><select class="fi" id="np"><option value="uber">Uber</option><option value="bolt">Bolt</option><option value="yango">Yango</option><option value="all">All platforms</option></select></div>
+      <div><span class="fl">Category</span><select class="fi" id="nc"><option value="feature">Feature</option><option value="promo">Promo / Incentive</option><option value="driver">Driver program</option><option value="policy">Policy</option><option value="fare">Fare change</option></select></div>
+      <div><span class="fl">Status</span><select class="fi" id="ns"><option value="live">Live</option><option value="planned">Planned</option><option value="ended">Ended</option></select></div>
     </div>
     <div class="fg2">
-      <div><span class="fl">Title</span><input class="fi" id="new-title" type="text" placeholder="e.g. Uber Cash MoMo launch Accra"></div>
-      <div><span class="fl">Date</span><input class="fi" id="new-date" type="month"></div>
+      <div><span class="fl">Title</span><input class="fi" id="nt" type="text" placeholder="e.g. Uber Cash MoMo launch"></div>
+      <div><span class="fl">Date</span><input class="fi" id="nd" type="month"></div>
     </div>
-    <div style="margin-bottom:12px;"><span class="fl">Description</span><textarea class="fi" id="new-desc" placeholder="What is it? Impact on drivers or passengers?"></textarea></div>
-    <button class="btn-add" onclick="addInit()">+ Add initiative</button>
+    <div style="margin-bottom:10px;"><span class="fl">Description</span><textarea class="fi" id="ndesc" placeholder="What is it? Impact on drivers or passengers?"></textarea></div>
+    <button class="abtn" onclick="addI()">+ Add</button>
   </div>
-  <div class="init-filters">
-    <button class="f-btn active" onclick="filterInit('all',this)">All</button>
-    <button class="f-btn" onclick="filterInit('uber',this)">Uber</button>
-    <button class="f-btn" onclick="filterInit('bolt',this)">Bolt</button>
-    <button class="f-btn" onclick="filterInit('yango',this)">Yango</button>
-    <button class="f-btn" onclick="filterInit('feature',this)">Features</button>
-    <button class="f-btn" onclick="filterInit('promo',this)">Promos</button>
-    <button class="f-btn" onclick="filterInit('driver',this)">Driver programs</button>
-    <button class="f-btn" onclick="filterInit('live',this)">Live only</button>
+  <div class="ifilters">
+    <button class="ifbtn on" onclick="fI('all',this)">All</button>
+    <button class="ifbtn" onclick="fI('uber',this)">Uber</button>
+    <button class="ifbtn" onclick="fI('bolt',this)">Bolt</button>
+    <button class="ifbtn" onclick="fI('yango',this)">Yango</button>
+    <button class="ifbtn" onclick="fI('feature',this)">Features</button>
+    <button class="ifbtn" onclick="fI('promo',this)">Promos</button>
+    <button class="ifbtn" onclick="fI('driver',this)">Driver programs</button>
+    <button class="ifbtn" onclick="fI('live',this)">Live only</button>
   </div>
-  <div id="init-list"></div>
+  <div id="ilist"></div>
 </div>
 
 <!-- IMPACT -->
-<div id="tab-impact" class="tab-panel">
-  <div class="sec">Impact analysis — drivers & passengers</div>
-  <div class="impact-grid">
-    <div class="ic"><div class="ic-title">On drivers</div>
-      <div class="ic-row">Fuel ~35–40% of daily operating cost at Apr 2026 prices</div>
-      <div class="ic-row">200 km/day at GHS 17.10 diesel ≈ GHS 342 fuel/day</div>
-      <div class="ic-row">VIT + DTF (GHS 1.00/trip) add fixed costs per trip</div>
-      <div class="ic-row">No GPRTU protection — fares lag fuel price increases</div>
-      <div class="ic-row">Moove/fleet partners absorb vehicle acquisition costs</div>
-      <div class="ic-row">Surge pricing partially compensates — demand-dependent</div>
+<div id="p-impact" class="panel">
+  <div class="sec">Impact analysis</div>
+  <div class="igrid">
+    <div class="ic"><div class="icttl">On drivers</div>
+      <div class="icrow">Fuel ~35–40% of daily operating cost</div>
+      <div class="icrow">200 km/day at GHS 17.10 diesel ≈ GHS 342 fuel/day</div>
+      <div class="icrow">VIT + DTF add fixed costs per trip</div>
+      <div class="icrow">No GPRTU protection — fares lag fuel prices</div>
+      <div class="icrow">Moove/fleet partners absorb vehicle acquisition costs</div>
+      <div class="icrow">Surge pricing partially compensates — demand-dependent</div>
     </div>
-    <div class="ic"><div class="ic-title">On passengers</div>
-      <div class="ic-row">Booking fee (%) + platform fee on every trip</div>
-      <div class="ic-row">10 km Accra ride est. GHS 28–48 across platforms</div>
-      <div class="ic-row">Wait time charges compound in Accra peak-hour traffic</div>
-      <div class="ic-row">Bolt cheapest overall; Yango competitive on promos</div>
-      <div class="ic-row">Trotro still 60–70% cheaper than any ride-hailing app</div>
-      <div class="ic-row">18–19% of Accra commuters use ride-hailing (2025 survey)</div>
+    <div class="ic"><div class="icttl">On passengers</div>
+      <div class="icrow">Service fee + platform fee on every trip</div>
+      <div class="icrow">10 km Accra ride est. GHS 35–55 across platforms</div>
+      <div class="icrow">Wait time charges compound in Accra peak-hour traffic</div>
+      <div class="icrow">Yango cheapest base; Bolt mid; Uber premium</div>
+      <div class="icrow">Trotro still 60–70% cheaper than any ride-hailing app</div>
+      <div class="icrow">18–19% of Accra commuters use ride-hailing (2025)</div>
     </div>
   </div>
 </div>
 
-<!-- SOURCES & METHOD -->
-<div id="tab-sources" class="tab-panel">
+<!-- SOURCES -->
+<div id="p-sources" class="panel">
   <div class="sec">Data sources</div>
-  <div class="src-grid">
-    <div class="src-card">
-      <div class="src-title">Fuel prices — Ghana</div>
-      <div class="src-row"><span class="src-tag">Official</span><div class="src-info"><strong>National Petroleum Authority (NPA)</strong> — biweekly price floors, price build-up data 2015–present. <a href="https://npa.gov.gh" target="_blank">npa.gov.gh</a></div></div>
-      <div class="src-row"><span class="src-tag">Industry</span><div class="src-info"><strong>COPEC Ghana</strong> — Chamber of Petroleum Consumers, market surveys, price projections. Consumer advocacy body.</div></div>
-      <div class="src-row"><span class="src-tag">Industry</span><div class="src-info"><strong>COMAC</strong> — Chamber of Oil Marketing Companies. Biweekly market outlooks and pricing guidance.</div></div>
-      <div class="src-row"><span class="src-tag">Market</span><div class="src-info"><strong>GOIL / Star Oil / TotalEnergies</strong> — direct pump price announcements and press releases.</div></div>
-      <div class="src-row"><span class="src-tag">Historical</span><div class="src-info"><strong>GlobalPetrolPrices.com</strong> — weekly historical retail prices Ghana from 2016. <a href="https://globalpetrolprices.com/Ghana/gasoline_prices/" target="_blank">Link</a></div></div>
-      <div class="src-row"><span class="src-tag">Analysis</span><div class="src-info"><strong>CBOD Ghana</strong> — Bulk Oil Distributors, 2020–2024 price surge analysis.</div></div>
+  <div class="sgrid">
+    <div class="scard"><div class="scttl">Fuel prices — Ghana</div>
+      <div class="srow"><span class="stag">Official</span><div class="sinfo"><strong style="color:#e8e8e8;">National Petroleum Authority (NPA)</strong> — biweekly price floors. npa.gov.gh</div></div>
+      <div class="srow"><span class="stag">Industry</span><div class="sinfo"><strong style="color:#e8e8e8;">COPEC Ghana</strong> — Chamber of Petroleum Consumers, market surveys.</div></div>
+      <div class="srow"><span class="stag">Industry</span><div class="sinfo"><strong style="color:#e8e8e8;">COMAC</strong> — Chamber of Oil Marketing Companies, biweekly outlooks.</div></div>
+      <div class="srow"><span class="stag">Market</span><div class="sinfo"><strong style="color:#e8e8e8;">GOIL / Star Oil / TotalEnergies</strong> — direct pump price announcements.</div></div>
+      <div class="srow"><span class="stag">Historical</span><div class="sinfo"><strong style="color:#e8e8e8;">GlobalPetrolPrices.com</strong> — weekly historical retail prices Ghana 2016–present.</div></div>
     </div>
-    <div class="src-card">
-      <div class="src-title">Ride-hailing & policy</div>
-      <div class="src-row"><span class="src-tag">Union</span><div class="src-info"><strong>Ghana Online Drivers Union</strong> — fare policy statements, DTF impact. President: Francis Tengey. May 2025 statement on GPRTU cut exclusion.</div></div>
-      <div class="src-row"><span class="src-tag">Platform</span><div class="src-info"><strong>Uber Ghana official blog</strong> — commission structure, fare changes, DTF implementation. <a href="https://uber.com/en-GH/blog/" target="_blank">Link</a></div></div>
-      <div class="src-row"><span class="src-tag">Press</span><div class="src-info"><strong>CitiNewsroom.com</strong> — station price market checks, Apr 2026 OMC competition coverage.</div></div>
-      <div class="src-row"><span class="src-tag">Research</span><div class="src-info"><strong>Accra Street Journal</strong> — Uber vs Bolt vs Yango platform comparison study, Nov 2025.</div></div>
-      <div class="src-row"><span class="src-tag">Insider</span><div class="src-info"><strong>Platform operator knowledge</strong> — editable fare fields in the Fare Structure tab are maintained manually by the tracker author based on direct platform experience. <a href="https://koffiloukouserge.github.io/Uberghana-ops-tracker/" target="_blank">koffiloukouserge.github.io</a></div></div>
+    <div class="scard"><div class="scttl">Ride-hailing & policy</div>
+      <div class="srow"><span class="stag">Union</span><div class="sinfo"><strong style="color:#e8e8e8;">Ghana Online Drivers Union</strong> — fare policy statements, DTF impact (Francis Tengey).</div></div>
+      <div class="srow"><span class="stag">Platform</span><div class="sinfo"><strong style="color:#e8e8e8;">Uber Ghana official blog</strong> — commission structure, fare changes.</div></div>
+      <div class="srow"><span class="stag">Press</span><div class="sinfo"><strong style="color:#e8e8e8;">CitiNewsroom</strong> — station price market checks, OMC competition coverage Apr 2026.</div></div>
+      <div class="srow"><span class="stag">Insider</span><div class="sinfo"><strong style="color:#e8e8e8;">Operator knowledge</strong> — fare rates maintained by tracker author from direct platform experience.</div></div>
     </div>
-    <div class="src-card">
-      <div class="src-title">West Africa comparison</div>
-      <div class="src-row"><span class="src-tag">Global</span><div class="src-info"><strong>GlobalPetrolPrices.com</strong> — weekly retail prices by country. Nigeria, Côte d'Ivoire, Senegal data as of Mar 2026.</div></div>
-      <div class="src-row"><span class="src-tag">Industry</span><div class="src-info"><strong>MEMAN (Nigeria)</strong> — Major Energies Marketers Association. West Africa price comparison bulletin, Dec 2025.</div></div>
-      <div class="src-row"><span class="src-tag">Press</span><div class="src-info"><strong>Legit.ng · Punch · Radio Tamale</strong> — regional price reporting, Dangote refinery impact analysis.</div></div>
-      <div class="src-row"><span class="src-tag">Data</span><div class="src-info"><strong>TRT Afrika</strong> — Africa fuel price ranking, Jan 2024 (baseline reference).</div></div>
+    <div class="scard"><div class="scttl">West Africa comparison</div>
+      <div class="srow"><span class="stag">Global</span><div class="sinfo"><strong style="color:#e8e8e8;">GlobalPetrolPrices.com</strong> — weekly retail prices by country, Mar 2026.</div></div>
+      <div class="srow"><span class="stag">Industry</span><div class="sinfo"><strong style="color:#e8e8e8;">MEMAN Nigeria</strong> — West Africa price comparison bulletin, Dec 2025.</div></div>
+      <div class="srow"><span class="stag">Press</span><div class="sinfo"><strong style="color:#e8e8e8;">Legit.ng · Punch · Radio Tamale</strong> — regional price reporting.</div></div>
     </div>
-    <div class="src-card">
-      <div class="src-title">Macro & exchange rate</div>
-      <div class="src-row"><span class="src-tag">Official</span><div class="src-info"><strong>Bank of Ghana</strong> — cedi/USD exchange rate data, depreciation history 2022–2026.</div></div>
-      <div class="src-row"><span class="src-tag">Analysis</span><div class="src-info"><strong>Databank Research</strong> — FX intermediation programme, cedi outlook projections.</div></div>
-      <div class="src-row"><span class="src-tag">Global</span><div class="src-info"><strong>ICE Futures / WB Pink Sheet</strong> — Brent crude price history. Hormuz crisis data from CNBC, IEA, Axios.</div></div>
+    <div class="scard"><div class="scttl">Macro & exchange rate</div>
+      <div class="srow"><span class="stag">Official</span><div class="sinfo"><strong style="color:#e8e8e8;">Bank of Ghana</strong> — cedi/USD exchange rate, depreciation history.</div></div>
+      <div class="srow"><span class="stag">Analysis</span><div class="sinfo"><strong style="color:#e8e8e8;">Databank Research</strong> — FX intermediation programme, cedi outlook.</div></div>
+      <div class="srow"><span class="stag">Global</span><div class="sinfo"><strong style="color:#e8e8e8;">ICE Futures / WB Pink Sheet</strong> — Brent crude price history.</div></div>
     </div>
   </div>
-  <div class="method-box">
-    <div class="method-title">Methodology & update schedule</div>
-    <div class="method-row"><span>NPA fuel floors</span><div>Updated every 2 weeks (biweekly NPA pricing windows). Floors announced by NPA; actual pump prices set by OMCs at or above the floor.</div></div>
-    <div class="method-row"><span>Station prices</span><div>Sourced from CitiNewsroom market checks, COPEC surveys, and OMC press releases. Represent Accra area stations only. Prices valid for the stated window only.</div></div>
-    <div class="method-row"><span>West Africa table</span><div>USD/L for cross-country comparability. Converted from local currencies at prevailing rates. Updated monthly or on major price events.</div></div>
-    <div class="method-row"><span>Platform fare rates</span><div>Entered manually in the Fare Structure tab. Based on operator knowledge and public announcements. Uber base fare GHS 8.00 confirmed; per-km and per-min rates require verification from current app pricing.</div></div>
-    <div class="method-row"><span>Trip cost estimates</span><div>Calculated as: base fare + (per km × distance) + (per min × time) + (wait rate × wait time). Booking fee applied on subtotal. Platform fee added after. Estimates assume standard non-surge conditions.</div></div>
-    <div class="method-row"><span>Driver economics chart</span><div>Fuel cost = 200 km/day × 10L/100km × NPA floor diesel price. Earnings = estimated based on industry avg GHS 30/trip × assumed trips/day. Indicative only — actual earnings vary widely.</div></div>
-    <div class="method-row"><span>Data storage</span><div>All user edits (fare rates, situation report, initiatives) saved to browser localStorage. Data persists on page reload. Clearing browser storage resets to defaults.</div></div>
+  <div class="mbox">
+    <div class="mttl">Methodology</div>
+    <div class="mrow"><span>NPA fuel floors</span><div>Updated every 2 weeks (biweekly NPA pricing windows). Actual pump prices set by OMCs at or above the floor.</div></div>
+    <div class="mrow"><span>Trip cost estimates</span><div>Base fare + (per km × 10) + (per min × 15) + (wait × 2). Service fee on subtotal. Platform fee added after.</div></div>
+    <div class="mrow"><span>Driver economics</span><div>Fuel cost = 200 km/day × 10L/100km × NPA diesel floor. Earnings = indicative avg GHS 30/trip.</div></div>
+    <div class="mrow"><span>Data storage</span><div>All edits saved to browser localStorage and persist on reload.</div></div>
   </div>
 </div>
 
 <div class="footer">
-  <span>NPA · COPEC · COMAC · GlobalPetrolPrices · Ghana Online Drivers Union · CitiNewsroom · <a href="https://koffiloukouserge.github.io/Uberghana-ops-tracker/">koffiloukouserge.github.io</a></span>
-  <button class="save-btn" onclick="saveAll()">Save all edits</button>
+  <span>NPA · COPEC · COMAC · GlobalPetrolPrices · Ghana Online Drivers Union · CitiNewsroom · <a href="https://koffiloukouserge.github.io/ghana-tracker/">koffiloukouserge.github.io</a></span>
+  <button class="sbtn" onclick="saveAll()">Save all edits</button>
 </div>
 
 <script>
-// ── PURE CANVAS CHARTS ──
-function hexToRgb(h){const r=parseInt(h.slice(1,3),16),g=parseInt(h.slice(3,5),16),b=parseInt(h.slice(5,7),16);return[r,g,b];}
+// ── UTILS ──
+function gN(id,fb){var el=document.getElementById(id);if(!el)return fb;var v=parseFloat(el.value);return isNaN(v)?fb:v;}
+function gW(el){return el?el.getBoundingClientRect().width||el.parentElement.getBoundingClientRect().width||900:900;}
 
-function setupCanvas(id,h){
-  const c=document.getElementById(id);if(!c)return null;
-  const dpr=window.devicePixelRatio||1;
-  c.style.width='100%';c.style.height=h+'px';
-  c.width=c.offsetWidth*dpr;c.height=h*dpr;
-  const ctx=c.getContext('2d');ctx.scale(dpr,dpr);
-  return{ctx,W:c.offsetWidth,H:h};
-}
+// ── CANVAS CHARTS ──
+function hex2rgb(h){return[parseInt(h.slice(1,3),16),parseInt(h.slice(3,5),16),parseInt(h.slice(5,7),16)];}
 
-function drawLine(id,datasets,labels,hpx){
-  const r=setupCanvas(id,hpx||220);if(!r)return;
-  const{ctx,W,H}=r;
-  const PL=54,PR=20,PT=16,PB=38;
-  const cW=W-PL-PR,cH=H-PT-PB;
-  const all=datasets.flatMap(d=>d.data);
-  const minV=Math.floor(Math.min(...all)*0.85),maxV=Math.ceil(Math.max(...all)*1.06);
-  const xp=i=>PL+i*(cW/(labels.length-1));
-  const yp=v=>PT+cH-((v-minV)/(maxV-minV))*cH;
+function drawLine(id,datasets,labels){
+  var c=document.getElementById(id);if(!c)return;
+  var W=gW(c),H=220,dpr=window.devicePixelRatio||1;
+  c.width=W*dpr;c.height=H*dpr;
+  var ctx=c.getContext('2d');ctx.scale(dpr,dpr);
+  var PL=50,PR=16,PT=14,PB=36,cW=W-PL-PR,cH=H-PT-PB;
+  var all=[];datasets.forEach(function(d){d.data.forEach(function(v){all.push(v);});});
+  var minV=Math.floor(Math.min.apply(null,all)*0.85),maxV=Math.ceil(Math.max.apply(null,all)*1.06);
+  function xp(i){return PL+i*(cW/(labels.length-1));}
+  function yp(v){return PT+cH-((v-minV)/(maxV-minV))*cH;}
   ctx.clearRect(0,0,W,H);
-  for(let i=0;i<=5;i++){
-    const v=minV+(maxV-minV)/5*i,y=yp(v);
+  for(var i=0;i<=5;i++){
+    var v=minV+(maxV-minV)/5*i,y=yp(v);
     ctx.beginPath();ctx.moveTo(PL,y);ctx.lineTo(W-PR,y);
     ctx.strokeStyle='rgba(255,255,255,0.05)';ctx.lineWidth=1;ctx.stroke();
-    ctx.fillStyle='#555';ctx.font='10px 'Courier New', monospace';ctx.textAlign='right';
-    ctx.fillText(v.toFixed(1),PL-6,y+4);
+    ctx.fillStyle='#555';ctx.font='10px Courier New,monospace';ctx.textAlign='right';
+    ctx.fillText(v.toFixed(1),PL-5,y+4);
   }
-  labels.forEach((l,i)=>{ctx.fillStyle='#555';ctx.font='10px 'Courier New', monospace';ctx.textAlign='center';ctx.fillText(l,xp(i),H-8);});
-  datasets.forEach(ds=>{
-    const[r,g,b]=hexToRgb(ds.color);
+  labels.forEach(function(l,i){ctx.fillStyle='#555';ctx.font='10px Courier New,monospace';ctx.textAlign='center';ctx.fillText(l,xp(i),H-8);});
+  datasets.forEach(function(ds){
+    var rgb=hex2rgb(ds.color);
     ctx.beginPath();ctx.moveTo(xp(0),yp(ds.data[0]));
-    ds.data.forEach((v,i)=>{if(i===0)return;const x0=xp(i-1),y0=yp(ds.data[i-1]),x1=xp(i),y1=yp(v),cx=(x0+x1)/2;ctx.bezierCurveTo(cx,y0,cx,y1,x1,y1);});
+    for(var i=1;i<ds.data.length;i++){var x0=xp(i-1),y0=yp(ds.data[i-1]),x1=xp(i),y1=yp(ds.data[i]),cx=(x0+x1)/2;ctx.bezierCurveTo(cx,y0,cx,y1,x1,y1);}
     ctx.lineTo(xp(ds.data.length-1),PT+cH);ctx.lineTo(xp(0),PT+cH);ctx.closePath();
-    ctx.fillStyle=`rgba(${r},${g},${b},0.07)`;ctx.fill();
+    ctx.fillStyle='rgba('+rgb[0]+','+rgb[1]+','+rgb[2]+',0.07)';ctx.fill();
     ctx.beginPath();ctx.moveTo(xp(0),yp(ds.data[0]));
-    ds.data.forEach((v,i)=>{if(i===0)return;const x0=xp(i-1),y0=yp(ds.data[i-1]),x1=xp(i),y1=yp(v),cx=(x0+x1)/2;ctx.bezierCurveTo(cx,y0,cx,y1,x1,y1);});
+    for(var i=1;i<ds.data.length;i++){var x0=xp(i-1),y0=yp(ds.data[i-1]),x1=xp(i),y1=yp(ds.data[i]),cx=(x0+x1)/2;ctx.bezierCurveTo(cx,y0,cx,y1,x1,y1);}
     ctx.strokeStyle=ds.color;ctx.lineWidth=2.5;ctx.lineJoin='round';ctx.stroke();
-    ds.data.forEach((v,i)=>{ctx.beginPath();ctx.arc(xp(i),yp(v),4.5,0,Math.PI*2);ctx.fillStyle=ds.color;ctx.fill();ctx.beginPath();ctx.arc(xp(i),yp(v),2.5,0,Math.PI*2);ctx.fillStyle='#161616';ctx.fill();});
+    for(var i=0;i<ds.data.length;i++){ctx.beginPath();ctx.arc(xp(i),yp(ds.data[i]),4.5,0,Math.PI*2);ctx.fillStyle=ds.color;ctx.fill();ctx.beginPath();ctx.arc(xp(i),yp(ds.data[i]),2.5,0,Math.PI*2);ctx.fillStyle='#161616';ctx.fill();}
   });
 }
 
-function drawGrouped(id,series,labels,colors,hpx){
-  const r=setupCanvas(id,hpx||200);if(!r)return;
-  const{ctx,W,H}=r;
-  const PL=54,PR=20,PT=16,PB=36;
-  const cW=W-PL-PR,cH=H-PT-PB;
-  const maxV=Math.ceil(Math.max(...series.flatMap(s=>s))*1.12);
-  const n=series.length,grpW=cW/labels.length,bW=Math.min(26,(grpW*0.72)/n);
-  const xc=(gi,si)=>PL+gi*grpW+(grpW/2)-(n*bW/2)+(si+0.5)*bW;
-  const yp=v=>PT+cH-(v/maxV)*cH,hp=v=>(v/maxV)*cH;
+function drawGrouped(id,series,labels,colors){
+  var c=document.getElementById(id);if(!c)return;
+  var W=gW(c),H=200,dpr=window.devicePixelRatio||1;
+  c.width=W*dpr;c.height=H*dpr;
+  var ctx=c.getContext('2d');ctx.scale(dpr,dpr);
+  var PL=50,PR=16,PT=14,PB=34,cW=W-PL-PR,cH=H-PT-PB;
+  var all=[];series.forEach(function(s){s.forEach(function(v){all.push(v);});});
+  var maxV=Math.ceil(Math.max.apply(null,all)*1.12);
+  var n=series.length,grpW=cW/labels.length,bW=Math.min(24,(grpW*0.7)/n);
+  function xc(gi,si){return PL+gi*grpW+(grpW/2)-(n*bW/2)+(si+0.5)*bW;}
+  function yp(v){return PT+cH-(v/maxV)*cH;}
+  function hp(v){return(v/maxV)*cH;}
   ctx.clearRect(0,0,W,H);
-  for(let i=0;i<=4;i++){const v=maxV/4*i,y=yp(v);ctx.beginPath();ctx.moveTo(PL,y);ctx.lineTo(W-PR,y);ctx.strokeStyle='rgba(255,255,255,0.05)';ctx.lineWidth=1;ctx.stroke();ctx.fillStyle='#555';ctx.font='10px 'Courier New', monospace';ctx.textAlign='right';ctx.fillText(Math.round(v),PL-6,y+4);}
-  labels.forEach((l,gi)=>{ctx.fillStyle='#555';ctx.font='10px 'Courier New', monospace';ctx.textAlign='center';ctx.fillText(l,PL+gi*grpW+grpW/2,H-8);series.forEach((s,si)=>{const v=s[gi],[r,g,b]=hexToRgb(colors[si]),x=xc(gi,si)-bW/2,y=yp(v),h=hp(v);ctx.beginPath();if(ctx.roundRect)ctx.roundRect(x,y,bW,h,3);else ctx.rect(x,y,bW,h);ctx.fillStyle=`rgba(${r},${g},${b},0.75)`;ctx.fill();});});
-}
-
-function drawStacked(id,stacks,labels,colors,hpx){
-  const r=setupCanvas(id,hpx||200);if(!r)return;
-  const{ctx,W,H}=r;
-  const PL=54,PR=20,PT=16,PB=36;
-  const cW=W-PL-PR,cH=H-PT-PB;
-  const totals=labels.map((_,i)=>stacks.reduce((s,st)=>s+(st[i]||0),0));
-  const maxV=Math.ceil(Math.max(...totals)*1.12),bW=Math.min(52,cW/(labels.length*2));
-  const xc=i=>PL+(i+0.5)*(cW/labels.length),yp=v=>PT+cH-(v/maxV)*cH,hp=v=>(v/maxV)*cH;
-  ctx.clearRect(0,0,W,H);
-  for(let i=0;i<=4;i++){const v=maxV/4*i,y=yp(v);ctx.beginPath();ctx.moveTo(PL,y);ctx.lineTo(W-PR,y);ctx.strokeStyle='rgba(255,255,255,0.05)';ctx.lineWidth=1;ctx.stroke();ctx.fillStyle='#555';ctx.font='10px 'Courier New', monospace';ctx.textAlign='right';ctx.fillText(v.toFixed(0),PL-6,y+4);}
-  labels.forEach((l,i)=>{
-    ctx.fillStyle='#888';ctx.font='11px 'Courier New', monospace';ctx.textAlign='center';ctx.fillText(l,xc(i),H-8);
-    let cumY=PT+cH;
-    stacks.forEach((st,si)=>{const v=st[i]||0,h=hp(v);cumY-=h;const[r,g,b]=hexToRgb(colors[si]),alpha=si===0?0.35:si===1?0.65:0.9;ctx.beginPath();if(si===stacks.length-1&&ctx.roundRect)ctx.roundRect(xc(i)-bW/2,cumY,bW,h,3);else ctx.rect(xc(i)-bW/2,cumY,bW,h);ctx.fillStyle=`rgba(${r},${g},${b},${alpha})`;ctx.fill();});
-    ctx.fillStyle='#aaa';ctx.font='10px 'Courier New', monospace';ctx.textAlign='center';ctx.fillText(totals[i].toFixed(1),xc(i),yp(totals[i])-6);
+  for(var i=0;i<=4;i++){var v=maxV/4*i,y=yp(v);ctx.beginPath();ctx.moveTo(PL,y);ctx.lineTo(W-PR,y);ctx.strokeStyle='rgba(255,255,255,0.05)';ctx.lineWidth=1;ctx.stroke();ctx.fillStyle='#555';ctx.font='10px Courier New,monospace';ctx.textAlign='right';ctx.fillText(Math.round(v),PL-5,y+4);}
+  labels.forEach(function(l,gi){
+    ctx.fillStyle='#555';ctx.font='10px Courier New,monospace';ctx.textAlign='center';ctx.fillText(l,PL+gi*grpW+grpW/2,H-8);
+    series.forEach(function(s,si){var v=s[gi],rgb=hex2rgb(colors[si]),x=xc(gi,si)-bW/2,y=yp(v),h=hp(v);ctx.beginPath();ctx.rect(x,y,bW,h);ctx.fillStyle='rgba('+rgb[0]+','+rgb[1]+','+rgb[2]+',0.78)';ctx.fill();});
   });
 }
 
-function drawHorizBar(id,data,labels,colors,hpx){
-  const r=setupCanvas(id,hpx||240);if(!r)return;
-  const{ctx,W,H}=r;
-  const PL=110,PR=60,PT=20,PB=20;
-  const cW=W-PL-PR,cH=H-PT-PB;
-  const maxV=Math.ceil(Math.max(...data)*1.12);
-  const rowH=cH/data.length;
+function drawStacked(id,stacks,labels,colors){
+  var c=document.getElementById(id);if(!c)return;
+  var W=gW(c),H=200,dpr=window.devicePixelRatio||1;
+  c.width=W*dpr;c.height=H*dpr;
+  var ctx=c.getContext('2d');ctx.scale(dpr,dpr);
+  var PL=50,PR=16,PT=14,PB=34,cW=W-PL-PR,cH=H-PT-PB;
+  var totals=labels.map(function(_,i){return stacks.reduce(function(s,st){return s+(st[i]||0);},0);});
+  var maxV=Math.ceil(Math.max.apply(null,totals)*1.12),bW=Math.min(50,cW/(labels.length*2));
+  function xc(i){return PL+(i+0.5)*(cW/labels.length);}
+  function yp(v){return PT+cH-(v/maxV)*cH;}
+  function hp(v){return(v/maxV)*cH;}
   ctx.clearRect(0,0,W,H);
-  data.forEach((v,i)=>{
-    const y=PT+i*rowH+rowH/2;
-    const bW=(v/maxV)*cW;
-    const[r,g,b]=hexToRgb(colors[i]);
-    ctx.beginPath();if(ctx.roundRect)ctx.roundRect(PL,y-12,bW,24,4);else ctx.rect(PL,y-12,bW,24);
-    ctx.fillStyle=`rgba(${r},${g},${b},0.75)`;ctx.fill();
-    ctx.fillStyle='#888';ctx.font='11px 'Courier New', monospace';ctx.textAlign='right';ctx.fillText(labels[i],PL-8,y+4);
-    ctx.fillStyle='#ddd';ctx.font='500 11px 'Courier New', monospace';ctx.textAlign='left';ctx.fillText('$'+v.toFixed(2),PL+bW+8,y+4);
+  for(var i=0;i<=4;i++){var v=maxV/4*i,y=yp(v);ctx.beginPath();ctx.moveTo(PL,y);ctx.lineTo(W-PR,y);ctx.strokeStyle='rgba(255,255,255,0.05)';ctx.lineWidth=1;ctx.stroke();ctx.fillStyle='#555';ctx.font='10px Courier New,monospace';ctx.textAlign='right';ctx.fillText(v.toFixed(0),PL-5,y+4);}
+  labels.forEach(function(l,i){
+    ctx.fillStyle='#888';ctx.font='11px Courier New,monospace';ctx.textAlign='center';ctx.fillText(l,xc(i),H-8);
+    var cumY=PT+cH;
+    stacks.forEach(function(st,si){var v=st[i]||0,h=hp(v);cumY-=h;var rgb=hex2rgb(colors[si]),alpha=si===0?0.35:si===1?0.65:0.9;ctx.beginPath();ctx.rect(xc(i)-bW/2,cumY,bW,h);ctx.fillStyle='rgba('+rgb[0]+','+rgb[1]+','+rgb[2]+','+alpha+')';ctx.fill();});
+    ctx.fillStyle='#aaa';ctx.font='10px Courier New,monospace';ctx.textAlign='center';ctx.fillText(totals[i].toFixed(1),xc(i),yp(totals[i])-5);
   });
-  for(let i=0;i<=4;i++){const x=PL+(maxV/4*i/maxV)*cW;ctx.beginPath();ctx.moveTo(x,PT);ctx.lineTo(x,H-PB);ctx.strokeStyle='rgba(255,255,255,0.05)';ctx.lineWidth=1;ctx.stroke();}
+}
+
+function drawHoriz(id,data,labels,colors){
+  var c=document.getElementById(id);if(!c)return;
+  var W=gW(c),H=data.length*38+40,dpr=window.devicePixelRatio||1;
+  c.height=H;c.style.height=H+'px';
+  c.width=W*dpr;c.height=H*dpr;
+  var ctx=c.getContext('2d');ctx.scale(dpr,dpr);
+  var PL=130,PR=60,PT=16,PB=10,cW=W-PL-PR;
+  var maxV=Math.ceil(Math.max.apply(null,data)*1.15);
+  ctx.clearRect(0,0,W,H);
+  data.forEach(function(v,i){
+    var y=PT+i*38+19,bW=(v/maxV)*cW,rgb=hex2rgb(colors[i]);
+    ctx.beginPath();ctx.rect(PL,y-12,bW,24);ctx.fillStyle='rgba('+rgb[0]+','+rgb[1]+','+rgb[2]+',0.72)';ctx.fill();
+    ctx.fillStyle='#888';ctx.font='11px Courier New,monospace';ctx.textAlign='right';ctx.fillText(labels[i],PL-8,y+4);
+    ctx.fillStyle='#ddd';ctx.font='500 11px Courier New,monospace';ctx.textAlign='left';ctx.fillText('$'+v.toFixed(2),PL+bW+8,y+4);
+  });
+}
+
+function drawStaChart(id){
+  var c=document.getElementById(id);if(!c)return;
+  var labels=['Star Oil','GOIL','PETROSOL','Shell','TotalEnergies'];
+  var petrol=[13.30,13.30,13.98,14.29,14.49];
+  var diesel=[17.10,17.10,17.98,15.89,18.50];
+  var W=gW(c),H=220,dpr=window.devicePixelRatio||1;
+  c.width=W*dpr;c.height=H*dpr;
+  var ctx=c.getContext('2d');ctx.scale(dpr,dpr);
+  var PL=90,PR=16,PT=14,PB=34,cW=W-PL-PR,cH=H-PT-PB;
+  var maxV=20,n=2,grpW=cW/labels.length,bW=Math.min(22,(grpW*0.7)/n);
+  function xc(gi,si){return PL+gi*grpW+(grpW/2)-(n*bW/2)+(si+0.5)*bW;}
+  function yp(v){return PT+cH-(v/maxV)*cH;}
+  function hp(v){return(v/maxV)*cH;}
+  ctx.clearRect(0,0,W,H);
+  for(var i=0;i<=4;i++){var v=maxV/4*i,y=yp(v);ctx.beginPath();ctx.moveTo(PL,y);ctx.lineTo(W-PR,y);ctx.strokeStyle='rgba(255,255,255,0.05)';ctx.lineWidth=1;ctx.stroke();ctx.fillStyle='#555';ctx.font='10px Courier New,monospace';ctx.textAlign='right';ctx.fillText(v.toFixed(0),PL-5,y+4);}
+  labels.forEach(function(l,gi){
+    ctx.fillStyle='#888';ctx.font='10px Courier New,monospace';ctx.textAlign='center';ctx.fillText(l,PL+gi*grpW+grpW/2,H-8);
+    [[petrol[gi],'#5b9bd5'],[diesel[gi],'#e05a2b']].forEach(function(pair,si){
+      var v=pair[0],col=pair[1],rgb=hex2rgb(col),x=xc(gi,si)-bW/2,y=yp(v),h=hp(v);
+      ctx.beginPath();ctx.rect(x,y,bW,h);ctx.fillStyle='rgba('+rgb[0]+','+rgb[1]+','+rgb[2]+',0.78)';ctx.fill();
+    });
+  });
 }
 
 // ── FARE CALC ──
-function gN(id,fb){const el=document.getElementById(id);if(!el)return fb;const v=parseFloat(el.value);return isNaN(v)?fb:v;}
-
-function calcTrip(p,fbBase,fbKm,fbMin,fbWait){
-  const base=gN(p+'-base',fbBase),km=gN(p+'-km',fbKm),min=gN(p+'-min',fbMin),wait=gN(p+'-wait',fbWait);
-  const bkPct=gN(p+'-booking',6.1)/100,platFee=gN(p+'-platform',1.0);
-  const sub=+(base+km*10+min*15+wait*2).toFixed(2);
-  const bk=+(sub*bkPct).toFixed(2);
-  return{base,km,min,wait,sub,bk,bkPct:+(bkPct*100).toFixed(1),platFee,total:+(sub+bk+platFee).toFixed(2)};
+function calcTrip(base,km,min,wait,sfPct,platFee){
+  var sub=+(base+km*10+min*15+wait*2).toFixed(2);
+  var sf=+(sub*sfPct/100).toFixed(2);
+  return{base:base,km:km,min:min,wait:wait,sub:sub,sf:sf,sfPct:sfPct,platFee:platFee,total:+(sub+sf+platFee).toFixed(2)};
 }
-
 function renderBD(id,label,color,d){
-  document.getElementById(id).innerHTML=`
-    <div style="font-size:11px;font-weight:500;color:${color};margin-bottom:6px;">${label}</div>
-    <div class="bd-row"><span>Base fare</span><span>GHS ${d.base.toFixed(2)}</span></div>
-    <div class="bd-row"><span>Distance (10 km)</span><span>GHS ${(d.km*10).toFixed(2)}</span></div>
-    <div class="bd-row"><span>Time (15 min)</span><span>GHS ${(d.min*15).toFixed(2)}</span></div>
-    <div class="bd-row"><span>Wait (2 min)</span><span>GHS ${(d.wait*2).toFixed(2)}</span></div>
-    <div class="bd-row"><span>Booking (${d.bkPct}%)</span><span>GHS ${d.bk.toFixed(2)}</span></div>
-    <div class="bd-row"><span>Platform fee</span><span>GHS ${d.platFee.toFixed(2)}</span></div>
-    <div class="bd-row bd-total"><span>Total</span><span>GHS ${d.total.toFixed(2)}</span></div>`;
+  document.getElementById(id).innerHTML=
+    '<div style="font-size:11px;font-weight:500;color:'+color+';margin-bottom:5px;">'+label+'</div>'+
+    '<div class="bdr"><span>Base fare</span><span>GHS '+d.base.toFixed(2)+'</span></div>'+
+    '<div class="bdr"><span>Distance (10km)</span><span>GHS '+(d.km*10).toFixed(2)+'</span></div>'+
+    '<div class="bdr"><span>Time (15min)</span><span>GHS '+(d.min*15).toFixed(2)+'</span></div>'+
+    '<div class="bdr"><span>Wait (2min)</span><span>GHS '+(d.wait*2).toFixed(2)+'</span></div>'+
+    '<div class="bdr"><span>Service fee ('+d.sfPct+'%)</span><span>GHS '+d.sf.toFixed(2)+'</span></div>'+
+    '<div class="bdr"><span>Platform fee</span><span>GHS '+d.platFee.toFixed(2)+'</span></div>'+
+    '<div class="bdr bdt"><span>Total</span><span>GHS '+d.total.toFixed(2)+'</span></div>';
 }
 
-function updateTile(id,val){
-  const el=document.getElementById(id);if(!el)return;
-  const v=parseFloat(val);
-  el.innerHTML=(isNaN(v)?'—':v.toFixed(2))+' <span style="font-size:11px;color:var(--text2);">GHS</span>';
-}
-
-function buildCharts(){
+function buildAll(){
+  // Fuel line
   drawLine('cFuel',[
     {data:[4.8,5.5,9.0,17.5,10.5,12.0,13.0,11.57,13.30],color:'#5b9bd5'},
     {data:[4.5,5.2,8.5,18.85,11.0,13.0,15.45,14.35,17.10],color:'#e05a2b'}
   ],['2020','2021','22H1','22peak','2023','24H1','24end','Mar26','Apr26']);
 
+  // Driver grouped
   drawGrouped('cDriver',
     [[96,110,260,210,260,287,342],[180,200,240,280,300,320,340]],
     ['2020','2021','2022','2023','2024','Mar26','Apr26'],
     ['#e05a5a','#4caf72']);
 
-  const u=calcTrip('u',22,1.5,0.30,0.20);
-  const b=calcTrip('b',23,1.3,0.25,0.18);
-  const y=calcTrip('y',15,1.2,0.22,0.16);
-  renderBD('bd-uber','Uber','#5b9bd5',u);
-  renderBD('bd-bolt','Bolt','#e8a020',b);
-  renderBD('bd-yango','Yango','#4caf72',y);
-  updateTile('tile-u',document.getElementById('u-base').value);
-  updateTile('tile-b',document.getElementById('b-base').value);
-  updateTile('tile-y',document.getElementById('y-base').value);
+  // Fare stacked
+  var uBase=gN('u-base',22),uKm=gN('u-km',1.5),uMin=gN('u-min',0.30),uWait=gN('u-wait',0.20),uSF=gN('u-sf',28),uPF=gN('u-pf',1.0);
+  var bBase=gN('b-base',23),bKm=gN('b-km',1.3),bMin=gN('b-min',0.25),bWait=gN('b-wait',0.18),bSF=gN('b-sf',20),bPF=gN('b-pf',1.0);
+  var yBase=gN('y-base',15),yKm=gN('y-km',1.2),yMin=gN('y-min',0.22),yWait=gN('y-wait',0.16),ySF=gN('y-sf',18),yPF=gN('y-pf',1.0);
+  var u=calcTrip(uBase,uKm,uMin,uWait,uSF,uPF);
+  var b=calcTrip(bBase,bKm,bMin,bWait,bSF,bPF);
+  var y=calcTrip(yBase,yKm,yMin,yWait,ySF,yPF);
+  renderBD('bdu','Uber','#5b9bd5',u);
+  renderBD('bdb','Bolt','#e8a020',b);
+  renderBD('bdy','Yango','#4caf72',y);
   drawStacked('cFare',
-    [[u.sub,b.sub,y.sub],[u.bk,b.bk,y.bk],[u.platFee,b.platFee,y.platFee]],
+    [[u.sub,b.sub,y.sub],[u.sf,b.sf,y.sf],[u.platFee,b.platFee,y.platFee]],
     ['Uber','Bolt','Yango'],['#5b9bd5','#e8a020','#4caf72']);
 
-  // station bar chart
-  drawGrouped('cStations',
-    [[13.30,13.30,13.98,14.29,14.49],[17.10,17.10,17.98,15.89,18.50]],
-    ['Star Oil','GOIL','PETROSOL','Shell','TotalEnergies'],
-    ['#5b9bd5','#e05a2b']);
+  // Station
+  drawStaChart('cSta');
 
-  // west africa horizontal bar
-  const waData=[0.60,0.87,0.86,1.00,1.04,1.49,1.51,1.64];
-  const waLabels=['Nigeria','Liberia','Ghana 🇬🇭','Togo','Benin','Côte d\'Ivoire','Burkina Faso','Senegal'];
-  const waColors=waLabels.map((_,i)=>i===2?'#f0c040':i<2?'#4caf72':'#e05a5a');
-  drawHorizBar('cWestAf',waData,waLabels,waColors,280);
+  // West Africa
+  drawHoriz('cWA',
+    [0.60,0.87,0.86,1.00,1.04,1.49,1.51,1.64],
+    ['Nigeria','Liberia','Ghana','Togo','Benin',"Côte d'Ivoire",'Burkina Faso','Senegal'],
+    ['#4caf72','#4caf72','#f0c040','#e05a5a','#e05a5a','#e05a5a','#e05a5a','#e05a5a']);
 }
 
-document.querySelectorAll('.editable').forEach(el=>el.addEventListener('change',buildCharts));
-window.addEventListener('resize',()=>{if(document.getElementById('tab-overview').classList.contains('active'))buildCharts();});
+document.querySelectorAll('.ed').forEach(function(el){el.addEventListener('change',buildAll);});
+window.addEventListener('resize',buildAll);
 
 // ── TABS ──
-function switchTab(name,btn){
-  document.querySelectorAll('.tab-panel').forEach(p=>p.classList.remove('active'));
-  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
-  document.getElementById('tab-'+name).classList.add('active');
-  btn.classList.add('active');
-  setTimeout(buildCharts,60);
+function tab(name,btn){
+  document.querySelectorAll('.panel').forEach(function(p){p.classList.remove('on');});
+  document.querySelectorAll('.tbtn').forEach(function(b){b.classList.remove('on');});
+  document.getElementById('p-'+name).classList.add('on');
+  btn.classList.add('on');
+  setTimeout(buildAll,30);
 }
-
-// ── SITREP ──
-function autoResize(el){el.style.height='auto';el.style.height=el.scrollHeight+'px';}
 
 // ── INITIATIVES ──
-let initiatives=[],activeFilter='all';
-const PL2={uber:'Uber',bolt:'Bolt',yango:'Yango',all:'All platforms'};
-const CATS={feature:'Feature',promo:'Promo',driver:'Driver program',policy:'Policy',fare:'Fare change'};
-const SS={live:'s-live',planned:'s-planned',ended:'s-ended'};
-
-function addInit(){
-  const title=document.getElementById('new-title').value.trim();if(!title)return;
-  initiatives.unshift({id:Date.now(),platform:document.getElementById('new-platform').value,cat:document.getElementById('new-cat').value,status:document.getElementById('new-status').value,title,date:document.getElementById('new-date').value,desc:document.getElementById('new-desc').value.trim()});
-  document.getElementById('new-title').value='';document.getElementById('new-desc').value='';
-  persist();renderList();
+var inits=[],iFilter='all';
+var PL2={uber:'Uber',bolt:'Bolt',yango:'Yango',all:'All platforms'};
+var CATS={feature:'Feature',promo:'Promo',driver:'Driver program',policy:'Policy',fare:'Fare change'};
+var SS={live:'sl',planned:'sp',ended:'se'};
+function addI(){
+  var t=document.getElementById('nt').value.trim();if(!t)return;
+  inits.unshift({id:Date.now(),p:document.getElementById('np').value,c:document.getElementById('nc').value,s:document.getElementById('ns').value,t:t,d:document.getElementById('nd').value,desc:document.getElementById('ndesc').value.trim()});
+  document.getElementById('nt').value='';document.getElementById('ndesc').value='';
+  persist();renderI();
 }
-function deleteInit(id){initiatives=initiatives.filter(i=>i.id!==id);persist();renderList();}
-function filterInit(f,btn){activeFilter=f;document.querySelectorAll('.f-btn').forEach(b=>b.classList.remove('active'));btn.classList.add('active');renderList();}
-function renderList(){
-  const el=document.getElementById('init-list');
-  const list=initiatives.filter(i=>{
-    if(activeFilter==='all')return true;
-    if(['uber','bolt','yango'].includes(activeFilter))return i.platform===activeFilter||i.platform==='all';
-    if(['feature','promo','driver','policy','fare'].includes(activeFilter))return i.cat===activeFilter;
-    if(activeFilter==='live')return i.status==='live';
+function delI(id){inits=inits.filter(function(i){return i.id!==id;});persist();renderI();}
+function fI(f,btn){iFilter=f;document.querySelectorAll('.ifbtn').forEach(function(b){b.classList.remove('on');});btn.classList.add('on');renderI();}
+function renderI(){
+  var el=document.getElementById('ilist');
+  var list=inits.filter(function(i){
+    if(iFilter==='all')return true;
+    if(['uber','bolt','yango'].includes(iFilter))return i.p===iFilter||i.p==='all';
+    if(['feature','promo','driver','policy','fare'].includes(iFilter))return i.c===iFilter;
+    if(iFilter==='live')return i.s==='live';
     return true;
   });
-  if(!list.length){el.innerHTML=`<div style="padding:24px;text-align:center;font-size:12px;color:var(--text3);font-family:var(--mono);">No initiatives yet — add one above.</div>`;return;}
-  el.innerHTML=list.map(i=>`<div class="init-item"><div class="init-head"><div class="init-title-text">${i.title}</div><div style="display:flex;align-items:center;gap:8px;flex-shrink:0;"><span class="i-status ${SS[i.status]}">${i.status}</span><button class="btn-del" onclick="deleteInit(${i.id})">✕</button></div></div><div class="init-meta"><span class="ptag pt-${i.platform}">${PL2[i.platform]}</span><span class="ctag">${CATS[i.cat]}</span>${i.date?`<span style="font-family:var(--mono);font-size:10px;color:var(--text3);">${i.date}</span>`:''}</div>${i.desc?`<div class="init-desc">${i.desc}</div>`:''}</div>`).join('');
+  if(!list.length){el.innerHTML='<div style="padding:20px;text-align:center;font-size:12px;color:#444;font-family:Courier New,monospace;">No initiatives yet — add one above.</div>';return;}
+  el.innerHTML=list.map(function(i){
+    return '<div class="iitem"><div class="ihead"><div class="ititl">'+i.t+'</div><div style="display:flex;align-items:center;gap:6px;flex-shrink:0;"><span class="ist '+SS[i.s]+'">'+i.s+'</span><button class="bdel" onclick="delI('+i.id+')">✕</button></div></div>'+
+    '<div class="imeta"><span class="ptag pt-'+i.p+'">'+PL2[i.p]+'</span><span class="ctag">'+CATS[i.c]+'</span>'+(i.d?'<span style="font-family:Courier New,monospace;font-size:10px;color:#444;">'+i.d+'</span>':'')+'</div>'+
+    (i.desc?'<div class="idesc">'+i.desc+'</div>':'')+'</div>';
+  }).join('');
 }
 
 // ── PERSIST ──
 function persist(){
-  const fields={};document.querySelectorAll('.editable').forEach(el=>fields[el.id]=el.value);
-  const sr=document.getElementById('sitrep-content');
-  try{localStorage.setItem('gh_v8',JSON.stringify({fields,initiatives,sitrep:sr?sr.value:''}));}catch(e){}
+  var fields={};
+  document.querySelectorAll('.ed').forEach(function(el){fields[el.id]=el.value;});
+  var sr=document.getElementById('sr');
+  try{localStorage.setItem('gh_v9',JSON.stringify({fields:fields,inits:inits,sr:sr?sr.value:''}));}catch(e){}
 }
-function saveAll(){persist();const btn=event.target;btn.textContent='Saved ✓';setTimeout(()=>btn.textContent='Save all edits',2000);}
+function saveAll(){
+  persist();
+  var btn=event.target;btn.textContent='Saved ✓';
+  setTimeout(function(){btn.textContent='Save all edits';},2000);
+}
 
 // ── BOOT ──
-const now=new Date();
-const launch=new Date('2026-01-01');
-document.getElementById('day-count').textContent='Day '+Math.floor((now-launch)/86400000)+' · Ghana Ops Tracker';
+var now=new Date();
+var launch=new Date('2026-01-01');
+document.getElementById('daycount').textContent='Day '+Math.floor((now-launch)/86400000)+' · Ghana Ops Tracker';
 try{
-  const s=JSON.parse(localStorage.getItem('gh_v8')||'{}');
-  if(s.fields)Object.keys(s.fields).forEach(id=>{const el=document.getElementById(id);if(el)el.value=s.fields[id];});
-  if(s.initiatives)initiatives=s.initiatives;
-  if(s.sitrep){const sr=document.getElementById('sitrep-content');if(sr){sr.value=s.sitrep;autoResize(sr);}}
+  var s=JSON.parse(localStorage.getItem('gh_v9')||'{}');
+  if(s.fields)Object.keys(s.fields).forEach(function(id){var el=document.getElementById(id);if(el)el.value=s.fields[id];});
+  if(s.inits)inits=s.inits;
+  if(s.sr){var sr=document.getElementById('sr');if(sr){sr.value=s.sr;sr.style.height='auto';sr.style.height=sr.scrollHeight+'px';}}
 }catch(e){}
-document.getElementById('new-date').value=now.toISOString().slice(0,7);
-const sr=document.getElementById('sitrep-content');if(sr)autoResize(sr);
-renderList();
-setTimeout(buildCharts,120);
+document.getElementById('nd').value=now.toISOString().slice(0,7);
+renderI();
+window.addEventListener('load',function(){setTimeout(buildAll,100);});
 </script>
 </body>
 </html>
